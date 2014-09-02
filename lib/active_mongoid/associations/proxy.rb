@@ -8,11 +8,12 @@ module ActiveMongoid
       end
 
 
-      attr_accessor :base, :target
+      attr_accessor :base, :target, :__metadata__
 
       def init(base, target, metadata)
         @base = base
         @target = target
+        @__metadata__ = metadata
         yield(self) if block_given?
       end
 

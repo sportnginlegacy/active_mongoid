@@ -2,18 +2,18 @@ module ActiveMongoid
   module Associations
     class Builder
 
-      attr_reader :base, :metadata, :object
+      attr_reader :base, :__metadata__, :object
 
       def initialize(base, metadata, object)
         @base = base
-        @metadata = metadata
+        @__metadata__ = metadata
         @object = object
       end
 
       protected
 
       def klass
-        @klass ||= metadata.klass
+        @klass ||= __metadata__.klass
       end
 
       def query?
