@@ -45,7 +45,7 @@ describe ActiveMongoid::Associations::Mongoid::Macros do
 
       it "creates the correct relation" do
         expect(klass.am_relations["person"].relation).to eq(
-          ActiveMongoid::Associations::Referenced::In
+          ActiveMongoid::Associations::Mongoid::Referenced::In
         )
       end
 

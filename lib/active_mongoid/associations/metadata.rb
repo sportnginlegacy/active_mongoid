@@ -2,7 +2,7 @@ module ActiveMongoid
   module Associations
     class Metadata < Hash
 
-      delegate :foreign_key_default, :stores_foreign_key?, to: :relation
+      delegate :primary_key_default, :foreign_key_default, :stores_foreign_key?, to: :relation
 
       def initialize(properties = {})
         merge!(properties)
@@ -26,8 +26,16 @@ module ActiveMongoid
         query
       end
 
+      def key
+        relation.stores_foreign_key? ? foreign_key : primary_key
+      end
+
       def foreign_key
         @foreign_key ||= determine_foreign_key
+      end
+
+      def foreign_key_setter
+        @foreign_key_setter ||= "#{foreign_key}="
       end
 
       def determine_key
@@ -35,7 +43,7 @@ module ActiveMongoid
       end
 
       def primary_key
-        @primary_key ||= (self[:primary_key] || "_id").to_s
+        @primary_key ||= (self[:primary_key] || primary_key_default)
       end
 
       def determine_foreign_key
@@ -66,29 +74,24 @@ module ActiveMongoid
         name.to_s.pluralize
       end
 
-      def key
-        key = self[:key] || :id
-        key.to_s
-      end
-
-      def default_key
-        if base.is_a?(::Mongoid::Document)
-          :id
-        elsif base.is_a?(::ActiveRecord::Base)
-          :_id
-        end
-      end
-
       def relation
         self[:relation]
       end
 
       def inverse_class_name
-        self[:inverse_class_name]
+        self[:as] || self[:inverse_class_name]
       end
 
       def inverse
         inverse_class_name.underscore
+      end
+
+      def inverse_setter
+        "#{inverse}="
+      end
+
+      def inverse_metadata
+        object_class.am_relations[inverse]
       end
 
     end

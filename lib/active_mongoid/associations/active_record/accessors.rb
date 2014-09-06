@@ -61,13 +61,14 @@ module ActiveMongoid
             end
           end
 
-          # def document_id_getter(name, metadata)
-          #   self.instance_eval do
-          #     define_method("#{name}_id") do
-          #       BSON::ObjectId(super)
-          #     end
-          #   end
-          # end
+          def document_id_getter(name, metadata)
+            self.instance_eval do
+              define_method("#{name}_id") do
+                attribute = read_attribute("#{name}_id")
+                attribute.nil? ? nil : attribute.to_bson
+              end
+            end
+          end
 
           def document_setter(name, metadata)
             self.instance_eval do
@@ -81,13 +82,14 @@ module ActiveMongoid
             end
           end
 
-          # def document_id_setter(name, metadata)
-          #   self.instance_eval do
-          #     define_method("#{name}_id=") do |bson_id|
-          #       super(bson_id.to_s)
-          #     end
-          #   end
-          # end
+          def document_id_setter(name, metadata)
+            self.instance_eval do
+              define_method("#{name}_id=") do |bson_id|
+                attribute = bson_id.nil? ? nil : bson_id.to_s
+                write_attribute("#{name}_id", attribute)
+              end
+            end
+          end
 
         end
 

@@ -10,6 +10,47 @@ module ActiveMongoid
         @__metadata__ = metadata
       end
 
+      private
+
+      def check_inverse!(object)
+        # check for inverse relation and raise exception when not
+        true
+      end
+
+      def bind_foreign_key(base, id)
+        base.send(__metadata__.foreign_key_setter, id)
+      end
+
+      def bind_inverse(object, inverse)
+        if object.respond_to?(__metadata__.inverse_setter)
+          object.send(__metadata__.inverse_setter, inverse)
+        end
+      end
+
+      def record_id(base)
+        base.send(__metadata__.primary_key)
+      end
+
+      def set_base_metadata
+        inverse_metadata = __metadata__.inverse_metadata
+        if inverse_metadata != __metadata__ && !inverse_metadata.nil?
+          # base.__metadata__ = inverse_metadata
+        end
+        true
+      end
+
+      def bind_from_relational_parent(object)
+        check_inverse!(object)
+        bind_foreign_key(object, record_id(base))
+        bind_inverse(object, base)
+      end
+
+      def unbind_from_relational_parent(object)
+        check_inverse!(object)
+        bind_foreign_key(object, nil)
+        bind_polymorphic_type(object, nil)
+        bind_inverse(object, nil)
+      end
 
     end
   end

@@ -1,13 +1,10 @@
 require "active_mongoid/associations/metadata"
 require "active_mongoid/associations/builder"
-require "active_mongoid/associations/builders"
+require "active_mongoid/associations/binding"
 require "active_mongoid/associations/proxy"
 require "active_mongoid/associations/one"
-require "active_mongoid/associations/referenced/in"
-require "active_mongoid/associations/referenced/one"
 require "active_mongoid/associations/builders/in"
 require "active_mongoid/associations/builders/one"
-require "active_mongoid/associations/metadata"
 require "active_mongoid/associations/active_record/associations"
 require "active_mongoid/associations/mongoid/associations"
 
@@ -18,8 +15,6 @@ module ActiveMongoid
     included do
       class_attribute :am_relations
       self.am_relations = {}
-
-      include ActiveRecord::Builders
 
       if defined?(::ActiveRecord::Base) && self <= ::ActiveRecord::Base
         include ActiveRecord::Associations

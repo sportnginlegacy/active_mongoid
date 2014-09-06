@@ -3,4 +3,5 @@ class Player < ActiveRecord::Base
 
   # belongs_to_document :team
   has_one_document :person
+
 end

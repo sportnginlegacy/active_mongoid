@@ -6,6 +6,11 @@ module ActiveMongoid
 
         module ClassMethods
 
+          def has_one_record(name, options = {})
+            meta = characterize_association(name, Referenced::One, options)
+            relate_record(name, meta)
+          end
+
           def belongs_to_record(name, options = {})
             meta = characterize_association(name, Referenced::In, options)
             relate_record(name, meta)
@@ -27,6 +32,8 @@ module ActiveMongoid
           def relate_record(name, metadata)
             self.am_relations = am_relations.merge(name.to_s => metadata)
             reference_record(metadata)
+            record_builder(name, metadata)
+            record_creator(name, metadata)
             record_getter(name, metadata)
             record_setter(name, metadata)
             existence_check(name)

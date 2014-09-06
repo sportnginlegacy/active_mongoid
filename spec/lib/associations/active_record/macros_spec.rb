@@ -56,7 +56,7 @@ end
 
       it "creates the correct relation" do
         expect(klass.am_relations["person"].relation).to eq(
-          ActiveMongoid::Associations::Referenced::One
+          ActiveMongoid::Associations::ActiveRecord::Referenced::One
         )
       end
 

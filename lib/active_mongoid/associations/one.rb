@@ -1,6 +1,7 @@
 module ActiveMongoid
   module Associations
     class One < Proxy
+
       def clear
         target.delete
       end

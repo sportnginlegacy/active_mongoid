@@ -6,7 +6,7 @@ require 'active_record'
 require 'active_mongoid'
 require 'database_cleaner'
 
-require 'pry'
+# require 'pry'
 
 require 'rspec'
 

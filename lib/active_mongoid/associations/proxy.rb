@@ -7,6 +7,7 @@ module ActiveMongoid
           method =~ /(^__|^send|^object_id|^respond_to|^tap)/
       end
 
+      delegate :bind_one, :unbind_one, to: :binding
 
       attr_accessor :base, :target, :__metadata__
 
@@ -19,6 +20,14 @@ module ActiveMongoid
 
       def method_missing(name, *args, &block)
         target.send(name, *args, &block)
+      end
+
+
+      def ==(other)
+        return false unless other
+        return true if target.object_id == other.object_id
+        return true if target.attributes == other.attributes
+        target == other
       end
 
       protected

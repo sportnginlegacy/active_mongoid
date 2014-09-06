@@ -28,7 +28,7 @@ module ActiveMongoid
             if object && needs_no_database_query?(object, metadata)
               build_record(name, object, metadata)
             else
-              build_record(name, attributes[metadata.key], metadata)
+              build_record(name, attributes[metadata.key].to_s, metadata)
             end
           end
         end
@@ -64,7 +64,7 @@ module ActiveMongoid
             self.instance_eval do
               define_method("#{name}=") do |object|
                 if value = get_record_relation(name, metadata, object)
-                  set_record_relation(name, value.substitute_record(object))
+                  set_record_relation(name, value.substitute(object))
                 else
                   build_record(name, object, metadata)
                 end
