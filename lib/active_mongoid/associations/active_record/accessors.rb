@@ -74,7 +74,7 @@ module ActiveMongoid
             self.instance_eval do
               define_method("#{name}=") do |object|
                 if value = get_document_relation(name, metadata, object)
-                  set_document_relation(name, value.substitute_document(object))
+                  set_document_relation(name, value.substitute(object))
                 else
                   build_document(name, object, metadata)
                 end

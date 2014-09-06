@@ -18,9 +18,9 @@ describe ActiveMongoid::Associations::ActiveRecord::Builders do
         expect(player.person).to eq(person)
       end
 
-      # it "sets the inverse" do
-      #   expect(person.player).to eq(player)
-      # end
+      it "sets the inverse" do
+        expect(person.player).to eq(player)
+      end
 
       it "does not save the document" do
         expect(person).to_not be_persisted
@@ -44,7 +44,7 @@ describe ActiveMongoid::Associations::ActiveRecord::Builders do
           expect(division.league).to eq(league)
         end
 
-        xit "sets the inverse" do
+        it "sets the inverse" do
           expect(league.division).to eq(division)
         end
 

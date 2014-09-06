@@ -2,16 +2,16 @@ require "spec_helper"
 
 describe ActiveMongoid::Associations::ActiveRecord::Bindings::In do
 
-  let(:person) do
-    Person.new
+  let(:division) do
+    Division.new
   end
 
-  let(:player) do
-    Player.new
+  let(:league) do
+    League.new
   end
 
-  let(:person_metadata) do
-    Person.am_relations["player"]
+  let(:division_metadata) do
+    Division.am_relations["league"]
   end
 
   describe "#bind_one" do
@@ -19,17 +19,17 @@ describe ActiveMongoid::Associations::ActiveRecord::Bindings::In do
     context "when the child of a references one" do
 
       let(:binder) do
-        described_class.new(person, player, person_metadata)
+        described_class.new(division, league, division_metadata)
       end
 
       context "when the document is bindable with default" do
 
         before do
-          binder.bindle_one
+          binder.bind_one
         end
 
         it "sets the inverse relation" do
-          expect(player.person).to eq(person)
+          expect(league.division).to eq(division)
         end
 
       end

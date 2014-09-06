@@ -1,17 +1,17 @@
 require "spec_helper"
 
-describe ActiveMongoid::Associations::ActiveRecord::Bindings::One do
-
-  let(:player) do
-    Player.new
-  end
+describe ActiveMongoid::Associations::Mongoid::Bindings::In do
 
   let(:person) do
     Person.new
   end
 
-  let(:player_metadata) do
-    Player.am_relations["person"]
+  let(:player) do
+    Player.new
+  end
+
+  let(:person_metadata) do
+    Person.am_relations["player"]
   end
 
   describe "#bind_one" do
@@ -19,7 +19,7 @@ describe ActiveMongoid::Associations::ActiveRecord::Bindings::One do
     context "when the child of a references one" do
 
       let(:binder) do
-        described_class.new(player, person, player_metadata)
+        described_class.new(person, player, person_metadata)
       end
 
       context "when the document is bindable with default" do
@@ -29,7 +29,7 @@ describe ActiveMongoid::Associations::ActiveRecord::Bindings::One do
         end
 
         it "sets the inverse relation" do
-          expect(person.player).to eq(player)
+          expect(player.person).to eq(person)
         end
 
       end

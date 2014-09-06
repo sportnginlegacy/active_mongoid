@@ -18,7 +18,7 @@ describe ActiveMongoid::Associations::Mongoid::Builders do
         expect(league.division).to eq(division)
       end
 
-      xit "sets the inverse" do
+      it "sets the inverse" do
         expect(division.league).to eq(league)
       end
 
@@ -44,7 +44,7 @@ describe ActiveMongoid::Associations::Mongoid::Builders do
           expect(person.player).to eq(player)
         end
 
-        xit "sets the inverse" do
+        it "sets the inverse" do
           expect(player.person).to eq(person)
         end
 

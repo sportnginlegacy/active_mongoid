@@ -6,7 +6,7 @@ module ActiveMongoid
 
           def initialize(base, target, metadata)
             init(base, target, metadata) do
-              # bind_one
+              bind_one
             end
           end
 
