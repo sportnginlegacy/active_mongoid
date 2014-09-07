@@ -25,7 +25,7 @@ module ActiveMongoid
           end
 
           def normalize(replacement)
-            return replacement if replacement.is_a?(::ActiveRecord::Base)
+            return replacement if replacement.is_a?(::Mongoid::Document)
             __metadata__.builder(klass, replacement).build
           end
 

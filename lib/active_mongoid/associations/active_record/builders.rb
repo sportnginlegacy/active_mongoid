@@ -16,9 +16,10 @@ module ActiveMongoid
           def document_creator(name, metadata)
             define_method("create_#{name}") do |attributes = {}|
               record = metadata.klass.new(attributes)
-              send("#{name}=", record)
+              obj = send("#{name}=", record)
               record.save
               save if metadata.stores_foreign_key?
+              obj
             end
             self
           end

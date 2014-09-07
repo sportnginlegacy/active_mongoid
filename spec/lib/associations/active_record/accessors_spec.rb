@@ -7,20 +7,48 @@ describe ActiveMongoid::Associations::ActiveRecord::Accessors do
     context "when the relation is a has_one" do
 
       let(:player) do
-        Player.new
+        Player.create
       end
 
-      let!(:person) do
-        player.build_person
+      context "when the relation does not exist" do
+
+        let!(:person) do
+          player.build_person
+        end
+
+        it "builds the document" do
+          expect(player).to have_person
+        end
+
+
+        it "does not save the document" do
+          expect(person).to_not be_persisted
+        end
+
       end
 
-      it "builds the document" do
-        expect(player).to have_person
-      end
+      context "when the relation already exists" do
 
+        let!(:original_person) do
+          player.create_person
+        end
 
-      it "does not save the document" do
-        expect(person).to_not be_persisted
+        let(:new_person) do
+          Person.new
+        end
+
+        before do
+          player.person = new_person
+        end
+
+        it "substitutes new document" do
+          expect(player.person).to eq(new_person)
+        end
+
+        it "removes old relation" do
+          expect(original_person.player_id).to be_nil
+        end
+
       end
 
     end
@@ -28,24 +56,50 @@ describe ActiveMongoid::Associations::ActiveRecord::Accessors do
     context "when relation is a belongs_to" do
 
       let(:division) do
-        Division.new
+        Division.create
       end
 
-      let!(:league) do
-        division.build_league
+      context "when the relation does not exist" do
+
+        let!(:league) do
+          division.build_league
+        end
+
+        it "builds the document" do
+          expect(division).to have_league
+        end
+
+        it "does not save the document" do
+          expect(league).to_not be_persisted
+        end
+
       end
 
-      it "builds the document" do
-        expect(division).to have_league
-      end
+      context "when the relation already exists" do
 
-      it "does not save the document" do
-        expect(league).to_not be_persisted
+        let!(:original_league) do
+          division.create_league
+        end
+
+        let(:new_league) do
+          League.new
+        end
+
+        before do
+          division.league = new_league
+        end
+
+        it "substitutes new document" do
+          expect(division.league).to eq(new_league)
+        end
+
+        it "removes old relation" do
+          expect(division.league_id).to eq(new_league.id)
+        end
+
       end
 
     end
-
-
 
   end
 

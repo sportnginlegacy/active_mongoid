@@ -7,37 +7,95 @@ describe ActiveMongoid::Associations::Mongoid::Accessors do
     context "when the relation is a has_one" do
 
       let(:league) do
-        League.new
+        League.create
       end
 
-      let!(:division) do
-        league.build_division
+      context "when the relation does not exist" do
+
+        let!(:division) do
+          league.build_division
+        end
+
+        it "builds the record" do
+          expect(league).to have_division
+          expect(league.division).to eq(division)
+        end
+
+
+        it "does not save the record" do
+          expect(division).to_not be_persisted
+        end
+
       end
 
-      it "builds the record" do
-        expect(league).to have_division
-        expect(league.division).to eq(division)
+      context "when the relation already does exist" do
+
+        let!(:original_division) do
+          league.create_division
+        end
+
+        let(:new_division) do
+          Division.new
+        end
+
+        before do
+          league.division = new_division
+        end
+
+        it "substitutes new record" do
+          expect(league.division).to eq(new_division)
+        end
+
+        it "removes old relation" do
+          expect(original_division.league_id).to be_nil
+          expect(original_division).to be_persisted
+        end
+
       end
 
-
-      it "does not save the record" do
-        expect(division).to_not be_persisted
-      end
     end
 
     context "when the relation is a belongs_to" do
 
       let(:person) do
-        Person.new
+        Person.create
       end
 
-      let!(:player) do
-        person.build_player
+      context "when the relation does not exist" do
+
+        let!(:player) do
+          person.build_player
+        end
+
+        it "builds the record" do
+          expect(person).to have_player
+          expect(person.player).to eq(player)
+        end
+
       end
 
-      it "builds the record" do
-        expect(person).to have_player
-        expect(person.player).to eq(player)
+      context "when the relation already does exist" do
+
+        let!(:original_player) do
+          person.create_player
+        end
+
+        let(:new_player) do
+          Player.new
+        end
+
+        before do
+          person.player = new_player
+        end
+
+        it "substitutes new record" do
+          expect(person.player).to eq(new_player)
+        end
+
+        it "removes old relation" do
+          expect(person.player_id).to be_nil
+        end
+
       end
 
     end

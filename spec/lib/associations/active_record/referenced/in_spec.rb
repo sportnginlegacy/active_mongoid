@@ -4,7 +4,6 @@ describe ActiveMongoid::Associations::ActiveRecord::Referenced::In do
 
   describe ".criteria" do
 
-
     context "" do
 
       let(:id) do
@@ -24,4 +23,6 @@ describe ActiveMongoid::Associations::ActiveRecord::Referenced::In do
       end
     end
   end
+
+
 end
