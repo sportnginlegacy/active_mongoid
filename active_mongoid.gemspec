@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "active_mongoid"
   spec.version       = ActiveMongoid::VERSION
   spec.authors       = ["Bryce Schmidt"]
-  spec.email         = ["bryce.schmidt@tstmedia.com"]
+  spec.email         = ["bryce.schmidt@sportngin.com"]
   spec.summary       = %q{TODO: Write a short summary. Required.}
   spec.description   = %q{TODO: Write a longer description. Optional.}
   spec.homepage      = ""
