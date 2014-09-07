@@ -15,7 +15,7 @@ module ActiveMongoid
           end
 
           def unbind_one
-            inverse = __metadata__.inverse(target)
+            inverse = __metadata__.inverse
             bind_foreign_key(base, nil)
             if inverse
               set_base_metadata

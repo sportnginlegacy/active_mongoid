@@ -1,5 +1,5 @@
 require "bundler/gem_tasks"
 
 task :test do
-  system "rspec"
+  system "rspec -b"
 end

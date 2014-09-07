@@ -94,6 +94,15 @@ module ActiveMongoid
         object_class.am_relations[inverse]
       end
 
+      def dependent
+        self[:dependent]
+      end
+
+      def destructive?
+        @destructive ||= (dependent == :delete || dependent == :destroy)
+      end
+
+
     end
   end
 end

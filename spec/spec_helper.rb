@@ -1,12 +1,17 @@
 require 'rubygems'
 require 'bundler/setup'
 
+require 'simplecov'
+require 'simplecov-gem-adapter'
+
+SimpleCov.start 'gem'
+
 require 'mongoid'
 require 'active_record'
 require 'active_mongoid'
 require 'database_cleaner'
 
-# require 'pry'
+require 'pry'
 
 require 'rspec'
 

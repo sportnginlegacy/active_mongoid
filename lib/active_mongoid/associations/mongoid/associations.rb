@@ -1,6 +1,7 @@
 require "active_mongoid/associations/mongoid/macros"
 require "active_mongoid/associations/mongoid/accessors"
 require "active_mongoid/associations/mongoid/builders"
+require "active_mongoid/associations/mongoid/auto_save"
 require "active_mongoid/associations/mongoid/bindings/one"
 require "active_mongoid/associations/mongoid/bindings/in"
 require "active_mongoid/associations/mongoid/referenced/one"
@@ -16,6 +17,7 @@ module ActiveMongoid
           include Mongoid::Macros
           include Mongoid::Accessors
           include Mongoid::Builders
+          include Mongoid::AutoSave
         end
 
       end

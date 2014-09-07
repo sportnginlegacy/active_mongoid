@@ -11,16 +11,15 @@ module ActiveMongoid
           end
 
           def substitute(replacement)
-            # unbind_one
-            # if persistable?
-            #   if __metadata__.destructive?
-            #     send(__metadata__.dependent)
-            #   else
-            #     save if persisted?
-            #   end
-            # end
-            # One.new(base, replacement, __metadata) if replacement
-            self
+            unbind_one
+            if base.persisted?
+              if __metadata__.destructive?
+                send(__metadata__.dependent)
+              else
+                save if persisted?
+              end
+            end
+            One.new(base, replacement, __metadata__) if replacement
           end
 
           private

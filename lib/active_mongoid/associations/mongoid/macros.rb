@@ -36,6 +36,7 @@ module ActiveMongoid
             record_creator(name, metadata)
             record_getter(name, metadata)
             record_setter(name, metadata)
+            autosave_records(metadata)
             existence_check(name)
           end
 

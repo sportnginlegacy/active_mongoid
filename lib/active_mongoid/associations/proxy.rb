@@ -22,6 +22,9 @@ module ActiveMongoid
         target.send(name, *args, &block)
       end
 
+      def klass
+        __metadata ? __metadata__.klass : nil
+      end
 
       def ==(other)
         return false unless other

@@ -11,11 +11,10 @@ module ActiveMongoid
           end
 
           def substitute(replacement)
-            # unbind_one
-            # return nil unless replacement
-            # self.target = normalize(replacement)
-            # bind_one
-            # self
+            unbind_one
+            return nil unless replacement
+            self.target = normalize(replacement)
+            bind_one
             self
           end
 
@@ -23,6 +22,11 @@ module ActiveMongoid
 
           def binding
             Bindings::In.new(base, target, __metadata__)
+          end
+
+          def normalize(replacement)
+            return replacement if replacement.is_a?(::ActiveRecord::Base)
+            __metadata__.builder(klass, replacement).build
           end
 
           class << self

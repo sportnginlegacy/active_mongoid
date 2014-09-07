@@ -26,6 +26,7 @@ module ActiveMongoid
             document_setter(name, metadata)
             document_id_setter(name, metadata)
             document_id_getter(name, metadata)
+            autosave_documents(metadata)
             existence_check(name)
           end
 

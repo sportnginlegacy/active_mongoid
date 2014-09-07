@@ -48,7 +48,7 @@ module ActiveMongoid
       def unbind_from_relational_parent(object)
         check_inverse!(object)
         bind_foreign_key(object, nil)
-        bind_polymorphic_type(object, nil)
+        # bind_polymorphic_type(object, nil)
         bind_inverse(object, nil)
       end
 

@@ -6,7 +6,6 @@ module ActiveMongoid
         def build(type = nil)
           return object unless query?
           model = type ? type.constantize : __metadata__.klass
-          # binding.pry
           __metadata__.criteria(object, model).first
         end
 
