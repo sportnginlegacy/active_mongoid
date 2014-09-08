@@ -33,4 +33,4 @@ TODO: Write usage instructions here
 [build_status]: https://travis-ci.org/sportngin/active_mongoid
 [build_status_image]: https://travis-ci.org/sportngin/active_mongoid.svg?branch=master
 [coverage_status]: https://coveralls.io/r/sportngin/active_mongoid
-[coverage_status_image]: https://coveralls.io/repos/sportngin/active_mongoid/badge.png
+[coverage_status_image]: https://img.shields.io/coveralls/sportngin/active_mongoid.svg
