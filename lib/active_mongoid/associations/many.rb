@@ -4,6 +4,100 @@ module ActiveMongoid
 
       delegate :avg, :max, :min, :sum, to: :criteria
       delegate :length, :size, to: :target
+      delegate :count, to: :criteria
+      delegate :first, :in_memory, :last, :reset, :uniq, to: :target
+
+      def initialize(base, target, metadata)
+        init(base, ActiveMongoid::Associations::Targets::Enumerable.new(target), metadata) do
+        end
+      end
+
+      def <<(*args)
+        objs = args.flatten
+        return concat(objs) if objs.size > 1
+        if objs = objs.first
+          append(objs)
+          objs.save if base.persisted?
+        end
+        self
+      end
+      alias :push :<<
+
+      def build(attributes = {}, type = nil)
+        obj = (type || klass).new(attributes)
+        append(obj)
+        yield(obj) if block_given?
+        obj
+      end
+      alias :new :build
+
+      def concat(objects)
+        objs, inserts = [], []
+        objects.each do |obj|
+          next unless obj
+          append(obj)
+          save_or_delay(obj, objs, inserts) if base.persisted?
+        end
+        persist_delayed(objs, inserts)
+        self
+      end
+
+      def purge
+        unless __metadata__.destructive?
+          nullify
+        else
+          after_remove_error = nil
+          criteria.delete_all
+          many = target.clear do |obj|
+            unbind_one(obj)
+            obj.destroyed = true
+          end
+          many
+        end
+      end
+      alias :clear :purge
+
+      def delete(object)
+        target.delete(object) do |obj|
+          unbind_one(obj) if obj
+          cascade!(obj)
+        end
+      end
+
+      def delete_all(conditions = nil)
+        remove_all(conditions, :delete_all)
+      end
+
+      def destroy_all(conditions = nil)
+        remove_all(conditions, :destroy_all)
+      end
+
+      def each
+        if block_given?
+          target.each { |obj| yield(obj) }
+        else
+          to_enum
+        end
+      end
+
+      def exists?
+        criteria.exists?
+      end
+
+      def find(*args)
+        matching = criteria.find(*args)
+        Array(matching).each { |obj| target.push(obj) }
+        matching
+      end
+
+      def nullify
+        criteria.update_all(__metadata__.foreign_key => nil)
+        target.clear do |obj|
+          unbind_one(obj)
+          obj.changed_attributes.delete(__metadata__.foreign_key)
+        end
+      end
+      alias :nullify_all :nullify
 
       def blank?
         size == 0
@@ -58,6 +152,25 @@ module ActiveMongoid
         # raise new exception
       end
 
+      def substitute(replacement)
+        if replacement
+          new_objs, objs = replacement.compact, []
+          new_ids = new_objs.map { |obj| obj.id }
+          remove_not_in(new_ids)
+          new_objs.each do |obj|
+            objs.push(obj) if obj.send(__metadata__.foreign_key) != base.id
+          end
+          concat(objs)
+        else
+          purge
+        end
+        self
+      end
+
+      def unscoped
+        klass.unscoped.where(__metadata__.foreign_key => base.id)
+      end
+
       private
 
       def find_or(method, attrs = {}, type = nil, &block)
@@ -65,6 +178,60 @@ module ActiveMongoid
         where(attrs).first || send(method, attrs, type, &block)
       end
 
+      def append(object)
+        target.push(object)
+        # characterize_one(object)
+        bind_one(object)
+      end
+
+      def cascade!(object)
+        if base.persisted?
+          if __metadata__.destructive?
+            object.send(__metadata__.dependent)
+          else
+            object.save
+          end
+        end
+      end
+
+      def method_missing(name, *args, &block)
+        if target.respond_to?(name)
+          target.send(name, *args, &block)
+        else
+          klass.send(:with_scope, criteria) do
+            criteria.public_send(name, *args, &block)
+          end
+        end
+      end
+
+      def remove_all(conditions = nil, method = :delete_all)
+        selector = conditions || {}
+        removed = klass.send(method, selector.merge!(criteria.selector))
+        target.delete_if do |obj|
+          if obj.matches?(selector)
+            unbind_one(obj) and true
+          end
+        end
+        removed
+      end
+
+      def remove_not_in(ids)
+        removed = criteria.not_in(_id: ids)
+        if __metadata__.destructive?
+          removed.delete_all
+        else
+          removed.update_all(__metadata__.foreign_key => nil)
+        end
+        in_memory.each do |obj|
+          if !ids.include?(obj.id)
+            unbind_one(obj)
+            target.delete(obj)
+            if __metadata__.destructive?
+              obj.destroyed = true
+            end
+          end
+        end
+      end
 
     end
   end
