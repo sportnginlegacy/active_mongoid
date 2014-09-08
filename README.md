@@ -1,5 +1,6 @@
 # ActiveMongoid
 [![Build Status][build_status_image]][build_status]
+[![Coverage Status](coverage_status_image)](coverage_status)
 
 TODO: Write a gem description
 
@@ -31,3 +32,5 @@ TODO: Write usage instructions here
 
 [build_status]: https://travis-ci.org/sportngin/active_mongoid
 [build_status_image]: https://travis-ci.org/sportngin/active_mongoid.svg?branch=master
+[coverage_status]: https://coveralls.io/r/sportngin/active_mongoid
+[coverage_status_image]: https://coveralls.io/repos/sportngin/active_mongoid/badge.png
