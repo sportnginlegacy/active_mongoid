@@ -1,6 +1,6 @@
 # ActiveMongoid
 [![Build Status][build_status_image]][build_status]
-[![Coverage Status](coverage_status_image)](coverage_status)
+[![Coverage Status][coverage_status_image]][coverage_status]
 
 TODO: Write a gem description
 
