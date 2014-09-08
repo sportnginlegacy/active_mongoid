@@ -9,6 +9,7 @@ require "active_mongoid/associations/builders/one"
 require "active_mongoid/associations/builders/many"
 require "active_mongoid/associations/active_record/associations"
 require "active_mongoid/associations/mongoid/associations"
+require "active_mongoid/associations/targets/enumerable"
 
 module ActiveMongoid
   module Associations

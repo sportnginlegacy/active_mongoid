@@ -23,7 +23,7 @@ module ActiveMongoid
             documents.each do |doc|
               next unless doc
               append(doc)
-              save_or_delay(doc, docs, inserts) if base.persisted
+              save_or_delay(doc, docs, inserts) if base.persisted?
             end
             persist_delayed(docs, inserts)
             self
@@ -71,15 +71,15 @@ module ActiveMongoid
           end
 
           def initialize(base, target, metadata)
-            init(base, Associations::Targets::Enumerable.new(target), metadata) do
+            init(base, ActiveMongoid::Associations::Targets::Enumerable.new(target), metadata) do
             end
           end
 
           def nullify
-            criteria.update_all(foreign_key => nil)
+            criteria.update_all(__metadata__.foreign_key => nil)
             target.clear do |doc|
               unbind_one(doc)
-              doc.changed_attributes.delete(foreign_key)
+              doc.changed_attributes.delete(__metadata__.foreign_key)
             end
           end
           alias :nullify_all :nullify
@@ -106,7 +106,7 @@ module ActiveMongoid
               new_ids = new_docs.map { |doc| doc.id }
               remove_not_in(new_ids)
               new_docs.each do |doc|
-                docs.push(doc) if doc.send(foreign_key) != base.id
+                docs.push(doc) if doc.send(__metadata__.foreign_key) != base.id
               end
               concat(docs)
             else
@@ -116,7 +116,7 @@ module ActiveMongoid
           end
 
           def unscoped
-            klass.unscoped.where(foreign_key => base.id)
+            klass.unscoped.where(__metadata__.foreign_key => base.id)
           end
 
           private
@@ -137,11 +137,11 @@ module ActiveMongoid
           end
 
           def criteria
-            Many.criteria(__metadata__, base.send(__metadata.primary_key), base.class)
+            Many.criteria(__metadata__, base.send(__metadata__.primary_key), base.class)
           end
 
           def cascade!(document)
-            if base.persisted
+            if base.persisted?
               if __metadata__.destructive?
                 document.send(__metadata__.dependent)
               else
@@ -152,7 +152,6 @@ module ActiveMongoid
 
           def method_missing(name, *args, &block)
             if target.respond_to?(name)
-              puts ":method_missing -> #{name}"
               target.send(name, *args, &block)
             else
               klass.send(:with_scope, criteria) do
@@ -188,7 +187,7 @@ module ActiveMongoid
             if __metadata__.destructive?
               removed.delete_all
             else
-              removed.update_all(foreign_key => nil)
+              removed.update_all(__metadata__.foreign_key => nil)
             end
             in_memory.each do |doc|
               if !ids.include?(doc.id)
