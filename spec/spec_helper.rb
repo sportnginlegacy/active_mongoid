@@ -4,11 +4,11 @@ require 'bundler/setup'
 require 'simplecov'
 require 'simplecov-gem-adapter'
 
-# require 'coveralls'
+require 'coveralls'
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
   SimpleCov::Formatter::HTMLFormatter
-  # Coveralls::SimpleCov::Formatter
+  Coveralls::SimpleCov::Formatter
 ]
 
 SimpleCov.start 'gem'
