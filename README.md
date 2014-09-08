@@ -1,4 +1,5 @@
 # ActiveMongoid
+[![Build Status][build_status_image]][build_status]
 
 TODO: Write a gem description
 
