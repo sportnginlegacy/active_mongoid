@@ -21,6 +21,7 @@ describe ActiveMongoid::Associations::ActiveRecord::Referenced::One do
 
       it "does not include the type in the criteria" do
         expect(criteria.selector).to eq({"player_id" => id})
+        expect(criteria.klass).to eq(Person)
       end
     end
   end

@@ -20,6 +20,7 @@ describe ActiveMongoid::Associations::ActiveRecord::Referenced::In do
 
       it "does not include the type in the criteria" do
         expect(criteria.selector).to eq({"_id" => id})
+        expect(criteria.klass).to eq(League)
       end
     end
   end

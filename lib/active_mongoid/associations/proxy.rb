@@ -27,13 +27,11 @@ module ActiveMongoid
       end
 
       def ==(other)
-        return false unless other
-        return true if target.object_id == other.object_id
-        return true if target.attributes == other.attributes
+        # return false unless other
+        # return true if target.object_id == other.object_id
+        # return true if target.attributes == other.attributes
         target == other
       end
-
-      protected
 
     end
   end

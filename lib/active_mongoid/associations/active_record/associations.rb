@@ -4,8 +4,10 @@ require "active_mongoid/associations/active_record/builders"
 require "active_mongoid/associations/active_record/auto_save"
 require "active_mongoid/associations/active_record/bindings/one"
 require "active_mongoid/associations/active_record/bindings/in"
+require "active_mongoid/associations/active_record/bindings/many"
 require "active_mongoid/associations/active_record/referenced/one"
 require "active_mongoid/associations/active_record/referenced/in"
+require "active_mongoid/associations/active_record/referenced/many"
 
 module ActiveMongoid
   module Associations
