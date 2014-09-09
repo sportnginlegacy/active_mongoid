@@ -1,3 +1,5 @@
+require 'mongoid'
+
 module ActiveMongoid
   module Associations
     module Targets
