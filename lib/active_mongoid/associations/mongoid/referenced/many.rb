@@ -1,6 +1,6 @@
 module ActiveMongoid
   module Associations
-    module ActiveRecord
+    module Mongoid
       module Referenced
         class Many < Associations::Many
 
