@@ -6,6 +6,11 @@ module ActiveMongoid
 
         module ClassMethods
 
+          def belongs_to_document(name, options = {})
+            meta = characterize_association(name, Referenced::In, options)
+            relate_one_to_one_document(name, meta)
+          end
+
           def has_one_document(name, options = {})
             meta = characterize_association(name, Referenced::One, options)
             relate_one_to_one_document(name, meta)
@@ -16,11 +21,6 @@ module ActiveMongoid
             relate_document(name, meta)
             # document_ids_setter(name, metadata)
             # document_ids_getter(name, metadata)
-          end
-
-          def belongs_to_document(name, options = {})
-            meta = characterize_association(name, Referenced::In, options)
-            relate_one_to_one_document(name, meta)
           end
 
           private
