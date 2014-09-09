@@ -40,6 +40,35 @@ module ActiveMongoid
             end
           end
 
+          def remove_all(conditions = nil, method = :delete_all)
+            selector = conditions || {}
+            removed = klass.send(method, selector.merge!(criteria.selector))
+            target.delete_if do |obj|
+              if obj.matches?(selector)
+                unbind_one(obj) and true
+              end
+            end
+            removed
+          end
+
+          def remove_not_in(ids)
+            removed = criteria.not_in(_id: ids)
+            if __metadata__.destructive?
+              removed.delete_all
+            else
+              removed.update_all(__metadata__.foreign_key => nil)
+            end
+            in_memory.each do |obj|
+              if !ids.include?(obj.id)
+                unbind_one(obj)
+                target.delete(obj)
+                if __metadata__.destructive?
+                  obj.destroyed = true
+                end
+              end
+            end
+          end
+
           class << self
 
             def stores_foreign_key?
