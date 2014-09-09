@@ -1,5 +1,6 @@
 require "spec_helper"
 
+
 describe ActiveMongoid::Associations::ActiveRecord::Bindings::Many do
 
   let(:division) do
