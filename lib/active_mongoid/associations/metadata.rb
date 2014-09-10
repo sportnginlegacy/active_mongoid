@@ -78,13 +78,27 @@ module ActiveMongoid
         self[:relation]
       end
 
+      def inverse_klass
+        @inverse_klass ||= inverse_class_name.constantize
+      end
+
       def inverse_class_name
         self[:as] || self[:inverse_class_name]
       end
 
-      def inverse
-        inverse_class_name.underscore
+      def inverses(other = nil)
+        if self[:polymorphic]
+          # lookup_inverses(other)
+        else
+          @inverses ||= determine_inverses
+        end
       end
+
+      def inverse(other = nil)
+        invs = inverses(other)
+        invs.first if invs.count == 1
+      end
+
 
       def inverse_setter
         "#{inverse}="
@@ -92,6 +106,34 @@ module ActiveMongoid
 
       def inverse_metadata
         object_class.am_relations[inverse]
+      end
+
+      def determine_inverses
+        return [ inverse_of ] if has_key?(:inverse_of)
+        return [ as ] if has_key?(:as)
+        [ inverse_relation ]
+      end
+
+      def inverse_relation
+        @inverse_relation ||= determine_inverse_relation
+      end
+
+      def determine_inverse_relation
+        default = foreign_key_match || klass.am_relations[inverse_klass.name.underscore]
+        return default.name if default
+        # TODO: raise exception
+      end
+
+      def foreign_key_match
+        if fk = self[:foreign_key]
+          relations_metadata.detect do |meta|
+            fk == meta.foreign_key if meta.stores_foreign_key?
+          end
+        end
+      end
+
+      def relations_metadata
+        klass.am_relations.values
       end
 
       def dependent
