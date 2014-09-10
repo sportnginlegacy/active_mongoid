@@ -2,41 +2,15 @@ require "spec_helper"
 
 shared_examples "a has_many relation" do
 
-  let(:target) do
-    target_class.new
-  end
-
-  let(:target_1) do
-    target_class.new(name: 1)
-  end
-
-  let(:target_2) do
-    target_class.new(name: 2)
-  end
-
-  let(:targets) do
-    [target_1, target_2]
-  end
-
-  let(:new_base) do
-    base_class.new
-  end
-
-  let(:persisted_base) do
-    base_class.create
-  end
-
-  let(:new_relation) do
-    new_base.send(relation_name)
-  end
-
-  let(:persisted_relation) do
-    persisted_base.send(relation_name)
-  end
-
-  let(:metadata) do
-    base_class.am_relations[relation_name.to_s]
-  end
+  let(:target) { target_class.new }
+  let(:target_1) { target_class.new(name: 1) }
+  let(:target_2) { target_class.new(name: 2) }
+  let(:targets) { [target_1, target_2] }
+  let(:new_base) { base_class.new }
+  let(:persisted_base) { base_class.create }
+  let(:new_relation) { new_base.send(relation_name) }
+  let(:persisted_relation) { persisted_base.send(relation_name) }
+  let(:metadata) { base_class.am_relations[relation_name.to_s] }
 
   describe ".<<" do
 
