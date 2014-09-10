@@ -194,16 +194,6 @@ module ActiveMongoid
         end
       end
 
-      def method_missing(name, *args, &block)
-        if target.respond_to?(name)
-          target.send(name, *args, &block)
-        else
-          klass.send(:with_scope, criteria) do
-            criteria.public_send(name, *args, &block)
-          end
-        end
-      end
-
     end
   end
 end
