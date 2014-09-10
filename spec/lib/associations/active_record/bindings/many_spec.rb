@@ -3,13 +3,9 @@ require "spec_helper"
 
 describe ActiveMongoid::Associations::ActiveRecord::Bindings::Many do
 
-  let(:division) do
-    Division.new
-  end
+  let(:division){ Division.new }
 
-  let(:team) do
-    Team.new
-  end
+  let(:team){ Team.new }
 
   let(:division_metadata) do
     Division.am_relations["teams"]
