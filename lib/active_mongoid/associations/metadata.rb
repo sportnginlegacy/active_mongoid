@@ -58,7 +58,7 @@ module ActiveMongoid
       end
 
       def object_class
-        self[:class_name] || name.to_s.singularize.titleize.delete(' ').constantize
+        (self[:class_name] || name.to_s.singularize.titleize.delete(' ')).constantize
       end
       alias_method :klass, :object_class
 
