@@ -2,7 +2,7 @@ module ActiveMongoid
   module Associations
     class Metadata < Hash
 
-      delegate :primary_key_default, :foreign_key_default, :stores_foreign_key?, to: :relation
+      delegate :primary_key_default, :foreign_key_default, :stores_foreign_key?, :macro, to: :relation
 
       def initialize(properties = {})
         merge!(properties)

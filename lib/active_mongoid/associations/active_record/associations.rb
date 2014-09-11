@@ -15,12 +15,23 @@ module ActiveMongoid
       module Associations
         extend ActiveSupport::Concern
 
+        attr_accessor :__metadata__
+
         included do
           include ActiveRecord::Accessors
           include ActiveRecord::Macros
           include ActiveRecord::Builders
           include ActiveRecord::AutoSave
         end
+
+        def referenced_many_documents?
+          __metadata__ && __metadata__.macro == :has_many_documents
+        end
+
+        def referenced_one_document?
+          __metadata__ && __metadata__.macro == :has_one_document
+        end
+
 
       end
     end
