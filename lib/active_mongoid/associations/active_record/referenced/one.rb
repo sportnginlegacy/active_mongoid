@@ -50,6 +50,10 @@ module ActiveMongoid
               "id"
             end
 
+            def macro
+              :has_one_document
+            end
+
             def builder(base, meta, object)
               ActiveMongoid::Associations::Builders::One.new(base, meta, object)
             end

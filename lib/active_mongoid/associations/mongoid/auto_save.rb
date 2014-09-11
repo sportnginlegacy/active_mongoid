@@ -8,13 +8,12 @@ module ActiveMongoid
 
           def autosave_records(metadata)
             if metadata.autosave?
-              save_method = :"autosave_documents_for_#{metadata.name}"
+              save_method = :"autosave_records_for_#{metadata.name}"
               define_method(save_method) do
                 if relation = instance_variable_get("@#{metadata.name}")
                   Array(relation).each { |d| d.save if changed_for_autosave?(d) }
                 end
               end
-
               after_save save_method
             end
             autosave_record_id(metadata)

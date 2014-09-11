@@ -28,6 +28,24 @@ describe ActiveMongoid::Associations::Mongoid::Accessors do
 
       end
 
+      context "when the relation does not exist and class_name is specified" do
+
+        let!(:division_setting) do
+          league.build_division_setting
+        end
+
+        it "builds the record" do
+          expect(league).to have_division_setting
+          expect(league.division_setting).to eq(division_setting)
+        end
+
+
+        it "does not save the record" do
+          expect(division_setting).to_not be_persisted
+        end
+
+      end
+
       context "when the relation already does exist" do
 
         let!(:original_division) do

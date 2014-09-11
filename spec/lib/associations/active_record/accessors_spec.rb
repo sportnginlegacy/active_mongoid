@@ -101,11 +101,61 @@ describe ActiveMongoid::Associations::ActiveRecord::Accessors do
 
     end
 
+    context "when the relation is a has_many_documents" do
+
+      let(:division) do
+        Division.create
+      end
+
+      let(:teams) do
+        [Team.new]
+      end
+
+      context "when the relation does not exist" do
+
+        before do
+          division.teams = teams
+        end
+
+        it "builds the document" do
+          expect(division).to have_teams
+        end
+
+      end
+
+      context "when the relation already exists" do
+
+        let!(:original_teams) do
+          [division.teams.create]
+        end
+
+        let(:new_teams) do
+          [Team.new]
+        end
+
+        before do
+          division.teams = new_teams
+        end
+
+        it "substitutes new document" do
+          expect(division.teams).to eq(new_teams)
+        end
+
+        it "removes old relation" do
+          original_teams.each do |team|
+            expect(team.division_id).to be_nil
+          end
+        end
+
+      end
+
+    end
+
   end
 
   describe "#\{name}" do
 
-    context "when the relation is a has_one" do
+    context "when the relation is a has_one_document" do
 
       let(:player) do
         Player.create
@@ -134,7 +184,7 @@ describe ActiveMongoid::Associations::ActiveRecord::Accessors do
 
     end
 
-    context "when the relation is a belongs_to" do
+    context "when the relation is a belongs_to_document" do
 
       let(:league) do
         League.create
@@ -161,6 +211,35 @@ describe ActiveMongoid::Associations::ActiveRecord::Accessors do
 
         it "does not find record" do
           expect(divison).to_not have_league
+        end
+
+      end
+
+    end
+
+    context "when the relation is a has_many_documents" do
+
+      let(:division) do
+        Division.create
+      end
+
+
+      context "when relation exists" do
+
+        before do
+          Team.create(division: division.id)
+        end
+
+        it "finds the document" do
+          expect(division).to have_teams
+        end
+
+      end
+
+      context "when relation does not exist" do
+
+        it "does not find the document" do
+          expect(division).to_not have_teams
         end
 
       end

@@ -102,6 +102,55 @@ describe ActiveMongoid::Associations::Mongoid::AutoSave do
 
     end
 
+    describe "when relation is a has_many" do
+
+      before(:all) do
+        Team.autosave_records(Team.am_relations["players"].merge!(autosave: true))
+      end
+
+      after(:all) do
+        Team.reset_callbacks(:save)
+      end
+
+      let(:team) do
+        Team.new(name: "Foo")
+      end
+
+      let(:player) do
+        Player.new(name: "Foo")
+      end
+
+      context "when the option is provided" do
+
+        before do
+          team.players << player
+        end
+
+        context "when saving the parent document" do
+
+          before do
+            team.save
+          end
+
+          it "does save self" do
+            expect(team).to be_persisted
+          end
+
+          it "does save the relation" do
+            expect(player).to be_persisted
+          end
+
+          it "does save the relation id" do
+            expect(team.id).to_not be_nil
+            expect(player.team_id).to eq(team.id)
+          end
+
+        end
+
+      end
+
+    end
+
   end
 
 end

@@ -34,7 +34,7 @@ module ActiveMongoid
       def set_base_metadata
         inverse_metadata = __metadata__.inverse_metadata
         if inverse_metadata != __metadata__ && !inverse_metadata.nil?
-          # base.__metadata__ = inverse_metadata
+          base.__metadata__ = inverse_metadata
         end
         true
       end

@@ -51,6 +51,10 @@ module ActiveMongoid
               "_id"
             end
 
+            def macro
+              :belongs_to_document
+            end
+
             def builder(base, meta, object)
               ActiveMongoid::Associations::Builders::In.new(base, meta, object)
             end
