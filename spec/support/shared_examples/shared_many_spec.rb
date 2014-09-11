@@ -16,7 +16,6 @@ shared_examples "a has_many relation" do
 
     context "when base is not persisted" do
 
-
       before do
         new_relation << target
       end
