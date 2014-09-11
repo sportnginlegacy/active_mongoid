@@ -9,7 +9,7 @@ module ActiveMongoid
             bind_foreign_key(base, record_id(target))
             if inverse = __metadata__.inverse
               if set_base_metadata
-                if base.referenced_many?
+                if base.referenced_many_records?
                   target.__send__(inverse).push(base)
                 else
                   target.set_document_relation(inverse, base)
@@ -23,7 +23,7 @@ module ActiveMongoid
             bind_foreign_key(base, nil)
             if inverse
               set_base_metadata
-              if base.referenced_many?
+              if base.referenced_many_records?
                 target.__send__(inverse).delete(base)
               else
                 target.set_document_relation(inverse, nil)
