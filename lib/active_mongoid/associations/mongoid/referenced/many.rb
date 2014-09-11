@@ -18,8 +18,11 @@ module ActiveMongoid
           def persist_delayed(objs, inserts)
             unless objs.empty?
               # collection.insert(inserts)
+              inserts.each do |insert|
+                insert.save
+              end
               objs.each do |obj|
-                obj.save
+                # obj.save
                 # obj.post_persist
               end
             end
@@ -28,6 +31,7 @@ module ActiveMongoid
           def save_or_delay(obj, objs, inserts)
             if obj.new_record? && obj.valid?(:create)
               # obj.run_before_callbacks(:save, :create)
+              obj.save
               objs.push(obj)
               inserts.push(obj)
             else
@@ -39,11 +43,15 @@ module ActiveMongoid
             conditions = conditions || {}
             removed = klass.send(method, conditions.merge!(criteria.where_values_hash))
             target.delete_if do |obj|
-              if obj.matches?(conditions)
+              if matches?(obj, conditions)
                 unbind_one(obj) and true
               end
             end
             removed
+          end
+
+          def matches?(obj, conditions)
+            conditions.all? {|key, value| obj.attributes[key] == value}
           end
 
           def remove_not_in(ids)
@@ -97,7 +105,7 @@ module ActiveMongoid
             end
 
             def macro
-              :has_many_documents
+              :has_many_records
             end
 
             def builder(base, meta, object)
