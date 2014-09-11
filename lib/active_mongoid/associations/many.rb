@@ -85,7 +85,10 @@ module ActiveMongoid
       end
 
       def find(*args)
-        matching = criteria.find(*args)
+        begin
+          matching = criteria.find(*args)
+        rescue Exception => e
+        end
         Array(matching).each { |obj| target.push(obj) }
         matching
       end

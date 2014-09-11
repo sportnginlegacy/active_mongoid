@@ -3,8 +3,8 @@ require "spec_helper"
 shared_examples "a has_many relation" do
 
   let(:target) { target_class.new }
-  let(:target_1) { target_class.new(name: 1) }
-  let(:target_2) { target_class.new(name: 2) }
+  let(:target_1) { target_class.new(name: "1") }
+  let(:target_2) { target_class.new(name: "2") }
   let(:targets) { [target_1, target_2] }
   let(:new_base) { base_class.new }
   let(:persisted_base) { base_class.create }
@@ -339,6 +339,10 @@ shared_examples "a has_many relation" do
       persisted_relation << targets
     end
 
+    after do
+      persisted_relation.clear
+    end
+
     it "finds the specified target" do
       target = persisted_relation.find(target_1.id)
       expect(target).to eq(target_1)
@@ -353,7 +357,7 @@ shared_examples "a has_many relation" do
         end
 
         it "returns item when found" do
-          target = persisted_relation.find_or_initialize_by({name: 1})
+          target = persisted_relation.find_or_initialize_by({name: "1"})
           expect(target).to eq(target_1)
           expect(target).to be_persisted
         end
@@ -373,7 +377,7 @@ shared_examples "a has_many relation" do
         end
 
         it "returns item when found" do
-          target = persisted_relation.find_or_create_by({name: 1})
+          target = persisted_relation.find_or_create_by({name: "1"})
           expect(target).to eq(target_1)
           expect(target).to be_persisted
         end

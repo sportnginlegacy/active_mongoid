@@ -23,10 +23,10 @@ describe ActiveMongoid::Associations::ActiveRecord::Referenced::Many do
 
   end
 
-  # it_behaves_like "a has_many relation" do
-  #   let(:base_class) { Team }
-  #   let(:target_class) { Player }
-  #   let(:relation_name) { :players }
-  # end
+  it_behaves_like "a has_many relation" do
+    let(:base_class) { Team }
+    let(:target_class) { Player }
+    let(:relation_name) { :players }
+  end
 
 end

@@ -42,10 +42,9 @@ RSpec.configure do |config|
 
   config.around :each do |example|
     DatabaseCleaner[:active_record].cleaning do
-      example.run
-    end
-    DatabaseCleaner[:mongoid].cleaning do
-      example.run
+      DatabaseCleaner[:mongoid].cleaning do
+        example.run
+      end
     end
   end
 end

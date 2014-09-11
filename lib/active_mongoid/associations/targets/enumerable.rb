@@ -13,8 +13,7 @@ module ActiveMongoid
         alias :push :<<
 
         def delete(document)
-          id = document.id || document.object_id
-          doc = (_loaded.delete(document.id) || _added.delete(id))
+          doc = (_loaded.delete(document.id) || _added.delete(document.id) || _added.delete(document.object_id) )
           unless doc
             if _unloaded && _unloaded.where(_id: document.id).exists?
               yield(document) if block_given?
@@ -29,9 +28,9 @@ module ActiveMongoid
           load_all!
           deleted = in_memory.select(&block)
           deleted.each do |doc|
-            id = doc.id || doc.object_id
             _loaded.delete(doc.id)
-            _added.delete(id)
+            _added.delete(doc.id)
+            _added.delete(doc.object_id)
           end
           self
         end
@@ -46,8 +45,7 @@ module ActiveMongoid
             end
           else
             unloaded_documents.each do |doc|
-              id = doc.id || doc.object_id
-              document = _added.delete(doc.id) || _loaded.delete(id) || doc
+              document = _added.delete(doc.id) || _added.delete(doc.object_id) || _loaded.delete(doc.id) || doc
               _loaded[document.id] = document
               yield(document)
             end
@@ -61,7 +59,7 @@ module ActiveMongoid
         def include?(doc)
           return super unless _unloaded
           id = doc.id || doc.object_id
-          _unloaded.where(_id: doc.id).exists? || _added.has_key?(doc.id)
+          _unloaded.where(_id: doc.id).exists? || _added.has_key?(doc.id) || _added.has_key?(doc.object_id)
         end
 
 
