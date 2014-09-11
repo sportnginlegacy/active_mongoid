@@ -27,6 +27,12 @@ module ActiveMongoid
         end
       end
 
+      def bind_polymorphic_type(object, name)
+        if metadata.type
+          object.send(__metadata__.type_setter, name)
+        end
+      end
+
       def record_id(base)
         base.send(__metadata__.primary_key)
       end
@@ -42,13 +48,14 @@ module ActiveMongoid
       def bind_from_relational_parent(object)
         check_inverse!(object)
         bind_foreign_key(object, record_id(base))
+        bind_polymorphic_type(doc, base.class.name)
         bind_inverse(object, base)
       end
 
       def unbind_from_relational_parent(object)
         check_inverse!(object)
         bind_foreign_key(object, nil)
-        # bind_polymorphic_type(object, nil)
+        bind_polymorphic_type(object, nil)
         bind_inverse(object, nil)
       end
 

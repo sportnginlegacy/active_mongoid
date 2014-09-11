@@ -4,6 +4,14 @@ module ActiveMongoid
 
       delegate :primary_key_default, :foreign_key_default, :stores_foreign_key?, :macro, to: :relation
 
+      def as
+        self[:as]
+      end
+
+      def as?
+        !!as
+      end
+
       def initialize(properties = {})
         merge!(properties)
       end
@@ -36,6 +44,10 @@ module ActiveMongoid
 
       def foreign_key_setter
         @foreign_key_setter ||= "#{foreign_key}="
+      end
+
+      def type_setter
+        @type_setter ||= "#{type}="
       end
 
       def determine_key
@@ -83,15 +95,40 @@ module ActiveMongoid
       end
 
       def inverse_class_name
-        self[:as] || self[:inverse_class_name]
+        self[:inverse_class_name]
       end
 
       def inverses(other = nil)
         if self[:polymorphic]
-          # lookup_inverses(other)
+          lookup_inverses(other)
         else
           @inverses ||= determine_inverses
         end
+      end
+
+      def polymorphic?
+        @polymorphic ||= (!!self[:as] || !!self[:polymorphic])
+      end
+
+      def lookup_inverses(other)
+        return [ inverse_of ] if inverse_of
+        if other
+          matches = []
+          other.class.relations.values.each do |meta|
+            if meta.as == name && meta.class_name == inverse_class_name
+              matches.push(meta.name)
+            end
+          end
+          matches
+        end
+      end
+
+      def determine_inverse_for(field)
+        relation.stores_foreign_key? && polymorphic? ? "#{name}_#{field}" : nil
+      end
+
+      def inverse_type
+        @inverse_type ||= determine_inverse_for(:type)
       end
 
       def inverse(other = nil)
@@ -99,6 +136,9 @@ module ActiveMongoid
         invs.first if invs.count == 1
       end
 
+      def inverse_of
+        self[:inverse_of]
+      end
 
       def inverse_setter
         "#{inverse}="
@@ -142,6 +182,10 @@ module ActiveMongoid
 
       def destructive?
         @destructive ||= (dependent == :delete || dependent == :destroy)
+      end
+
+      def type
+        @type ||= polymorphic? ? "#{as}_type" : nil
       end
 
 

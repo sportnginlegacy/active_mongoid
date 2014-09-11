@@ -197,6 +197,14 @@ module ActiveMongoid
         end
       end
 
+      def with_polymorphic_criterion(criteria, metadata, type = nil)
+        if metadata.polymorphic?
+          criteria.where(metadata.type => type.name)
+        else
+          criteria
+        end
+      end
+
     end
   end
 end
