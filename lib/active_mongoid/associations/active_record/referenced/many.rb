@@ -19,7 +19,6 @@ module ActiveMongoid
             klass.collection
           end
 
-          # TODO: look into AR analog to collection insert
           def persist_delayed(docs, inserts)
             unless docs.empty?
               collection.insert(inserts)
