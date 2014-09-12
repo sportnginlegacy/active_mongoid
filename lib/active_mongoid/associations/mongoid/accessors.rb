@@ -23,14 +23,11 @@ module ActiveMongoid
 
         def get_record_relation(name, metadata, object, reload = false)
           if !reload && (value = instance_variable_get("@#{name}")) != nil
-puts "!!!! noreload"
             value
           else
             if object && needs_no_database_query?(object, metadata)
-puts "!!!! no query #{attributes[metadata.key].to_s}"
               build_record(name, object, metadata)
             else
-puts "!!!! query #{attributes[metadata.key].to_s}"
               build_record(name, attributes[metadata.key].to_s, metadata)
             end
           end
