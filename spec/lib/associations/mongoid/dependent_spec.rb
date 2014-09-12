@@ -21,7 +21,7 @@ describe ActiveMongoid::Associations::Mongoid::Dependent do
 
       it "destroys dependent" do
         persisted_base.destroy
-        expect(target_class.all).not_to include(new_target)
+        expect { new_target.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
     end
@@ -43,7 +43,7 @@ describe ActiveMongoid::Associations::Mongoid::Dependent do
 
       it "destroys dependent" do
         new_base.destroy
-        expect(target_class.all).not_to include(persisted_target)
+        expect { persisted_target.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
     end
@@ -65,7 +65,7 @@ describe ActiveMongoid::Associations::Mongoid::Dependent do
 
       it "destroys dependents" do
         persisted_base.destroy
-        expect(target_class.all).not_to include(new_target)
+        expect { new_target.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
     end
