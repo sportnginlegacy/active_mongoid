@@ -10,8 +10,10 @@ module ActiveMongoid
             if metadata.dependent
               dependent_method = :"dependent_records_for_#{metadata.name}"
               define_method(dependent_method) do
-                relation = get_record_relation(metadata.name, metadata, nil,  true)
-                Array(relation).each { |d| d.send(metadata.dependent) }
+                relation = get_record_relation(metadata.name, metadata, nil, true)
+                Array(relation).each do |d|
+                  d.send(metadata.dependent)
+                end
               end
 
               before_destroy dependent_method

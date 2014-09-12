@@ -60,7 +60,6 @@ describe ActiveMongoid::Associations::Mongoid::Dependent do
       before do
         base_class.dependent_records(metadata.merge!(dependent: :destroy))
         persisted_base.players << new_target
-        persisted_base.save!
         new_target.save!
       end
 
