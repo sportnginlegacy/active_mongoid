@@ -54,6 +54,7 @@ ActiveRecord::Base.establish_connection :adapter => 'sqlite3', :database => ':me
 ActiveRecord::Schema.define do
   create_table :players, :force => true do |t|
     t.string :name
+    t.string :title
     t.string :team_id
   end
 
