@@ -20,8 +20,12 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "activesupport"
   spec.add_dependency "activerecord"
+<<<<<<< HEAD
   spec.add_dependency "bson_ext"
   spec.add_dependency "mongoid", "~> 2.8.0"
+=======
+  spec.add_dependency "mongoid"
+>>>>>>> c5342c4... added appraisal gem to test multiple versions of mongoid
 
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "sqlite3"
@@ -33,4 +37,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency 'simplecov-gem-adapter'
   spec.add_development_dependency 'coveralls'
+  spec.add_development_dependency "appraisal"
 end
