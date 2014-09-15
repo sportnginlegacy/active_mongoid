@@ -188,7 +188,19 @@ module ActiveMongoid
         end
 
         def unloaded_documents
-          _unloaded.selector.values.any?(&:blank_criteria?) ? [] : _unloaded
+          blank_criteria?(_unloaded.selector.values) ? [] : _unloaded
+        end
+
+        def blank_criteria?(values)
+          if values.is_a?(Array)
+            puts "values: #{values.inspect}"
+            values.any?{|v| blank_criteria?(v)}
+          elsif self == { "_id" => { "$in" => [] }}
+            true
+          else
+            puts "FALSE"
+            false
+          end
         end
 
       end

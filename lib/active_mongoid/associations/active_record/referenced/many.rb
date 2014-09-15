@@ -24,14 +24,14 @@ module ActiveMongoid
               collection.insert(inserts)
               docs.each do |doc|
                 doc.new_record = false
-                doc.post_persist
               end
             end
           end
 
           def save_or_delay(doc, docs, inserts)
             if doc.new_record? && doc.valid?(:create)
-              doc.run_before_callbacks(:save, :create)
+              doc.run_callbacks(:save)
+              doc.run_callbacks(:create)
               docs.push(doc)
               inserts.push(doc.as_document)
             else
