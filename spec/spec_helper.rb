@@ -60,6 +60,7 @@ ActiveRecord::Schema.define do
   create_table :divisions, :force => true do |t|
     t.string :name
     t.string :league_id
+    t.string :pid
   end
 
   create_table :division_settings, :force => true do |t|
