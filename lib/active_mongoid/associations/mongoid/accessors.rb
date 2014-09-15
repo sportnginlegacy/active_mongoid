@@ -28,7 +28,7 @@ module ActiveMongoid
             if object && needs_no_database_query?(object, metadata)
               build_record(name, object, metadata)
             else
-              build_record(name, attributes[metadata.key].to_s, metadata)
+              build_record(name, attributes.with_indifferent_access[metadata.key].to_s, metadata)
             end
           end
         end

@@ -2,6 +2,7 @@ require "active_mongoid/associations/mongoid/macros"
 require "active_mongoid/associations/mongoid/accessors"
 require "active_mongoid/associations/mongoid/builders"
 require "active_mongoid/associations/mongoid/auto_save"
+require "active_mongoid/associations/mongoid/dependent"
 require "active_mongoid/associations/mongoid/bindings/one"
 require "active_mongoid/associations/mongoid/bindings/in"
 require "active_mongoid/associations/mongoid/bindings/many"
@@ -22,6 +23,7 @@ module ActiveMongoid
           include Mongoid::Accessors
           include Mongoid::Builders
           include Mongoid::AutoSave
+          include Mongoid::Dependent
         end
 
         def referenced_many_records?
