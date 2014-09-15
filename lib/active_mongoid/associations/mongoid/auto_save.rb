@@ -4,6 +4,10 @@ module ActiveMongoid
       module AutoSave
         extend ActiveSupport::Concern
 
+        def changed_for_autosave?(obj)
+          obj.new_record? || obj.changed? || obj.marked_for_destruction?
+        end
+
         module ClassMethods
 
           def autosave_records(metadata)
