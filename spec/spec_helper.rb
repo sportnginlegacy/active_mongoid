@@ -13,6 +13,9 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
 
 SimpleCov.start 'gem'
 
+require 'i18n'
+I18n.enforce_available_locales = false
+
 require 'mongoid'
 require 'active_record'
 require 'active_mongoid'
@@ -53,16 +56,19 @@ end
 ActiveRecord::Base.establish_connection :adapter => 'sqlite3', :database => ':memory:'
 ActiveRecord::Schema.define do
   create_table :players, :force => true do |t|
+    t.string :_id
     t.string :name
     t.string :team_id
   end
 
   create_table :divisions, :force => true do |t|
+    t.string :_id
     t.string :name
     t.string :league_id
   end
 
   create_table :division_settings, :force => true do |t|
+    t.string :_id
     t.string :name
     t.string :league_id
   end

@@ -3,7 +3,9 @@ require "spec_helper"
 describe ActiveMongoid::Associations::ActiveRecord::Macros do
 
   ActiveRecord::Schema.define do
-  create_table :active_record_test_classes, :force => true
+  create_table :active_record_test_classes, :force => true do |t|
+    t.string :_id
+  end
 end
 
   class ActiveRecordTestClass < ActiveRecord::Base
