@@ -101,7 +101,7 @@ module ActiveMongoid
             end
 
             def primary_key_default
-              "id"
+              "_id"
             end
 
             def macro

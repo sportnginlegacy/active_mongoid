@@ -33,7 +33,7 @@ module ActiveMongoid
         end
 
         def needs_no_database_query?(object, metadata)
-          object.is_a?(::Mongoid::Document) && object.id == attributes[metadata.key]
+          object.is_a?(::Mongoid::Document) && object.id.to_s == attributes[metadata.key].to_s
         end
 
 
