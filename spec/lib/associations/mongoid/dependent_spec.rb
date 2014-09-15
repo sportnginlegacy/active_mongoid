@@ -19,6 +19,10 @@ describe ActiveMongoid::Associations::Mongoid::Dependent do
         new_target.save!
       end
 
+      after do
+        base_class.reset_callbacks(:destroy)
+      end
+
       it "destroys dependent" do
         persisted_base.destroy
         expect { new_target.reload }.to raise_error(ActiveRecord::RecordNotFound)
@@ -41,6 +45,10 @@ describe ActiveMongoid::Associations::Mongoid::Dependent do
         new_base.save!
       end
 
+      after do
+        base_class.reset_callbacks(:destroy)
+      end
+
       it "destroys dependent" do
         new_base.destroy
         expect { persisted_target.reload }.to raise_error(ActiveRecord::RecordNotFound)
@@ -61,6 +69,10 @@ describe ActiveMongoid::Associations::Mongoid::Dependent do
         base_class.dependent_records(metadata.merge!(dependent: :destroy))
         persisted_base.players << new_target
         new_target.save!
+      end
+
+      after do
+        base_class.reset_callbacks(:destroy)
       end
 
       it "destroys dependents" do
