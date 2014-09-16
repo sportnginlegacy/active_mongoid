@@ -71,6 +71,27 @@ describe ActiveMongoid::Associations::Mongoid::Accessors do
 
       end
 
+      context "when foreign_key is defined" do
+
+        let(:post) do
+          Post.new
+        end
+
+        let!(:division) do
+          post.build_division
+        end
+
+        it "build the document" do
+          expect(post).to have_division
+        end
+
+        it "binds the reverse" do
+          expect(division).to have_post
+        end
+
+      end
+
+
     end
 
     context "when the relation is a belongs_to" do

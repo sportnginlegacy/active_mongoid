@@ -51,6 +51,22 @@ describe ActiveMongoid::Associations::ActiveRecord::Accessors do
 
       end
 
+      context "when foreign_key is defined" do
+
+        let!(:post) do
+          player.build_post
+        end
+
+        it "build the document" do
+          expect(player).to have_post
+        end
+
+        it "binds the reverse" do
+          expect(post).to have_player
+        end
+
+      end
+
     end
 
     context "when relation is a belongs_to" do
