@@ -314,19 +314,23 @@ shared_examples "a has_many relation" do
       persisted_relation.clear
     end
 
-    it "deletes the specified team" do
+    it "deletes the specified target" do
       persisted_relation.delete(target_1)
       expect(persisted_relation.map(&:id)).to eq([target_2.id])
       expect(target_1.send(metadata.foreign_key)).to be_nil
     end
 
-    it "deletes all teams" do
-      expect(target_class).to receive(:delete_all).once.with({metadata.foreign_key.to_s => persisted_base.id})
+    it "deletes all targets" do
+      id = persisted_base.id
+      id = id.is_a?(BSON::ObjectId) ? id.to_s : id
+      expect(target_class).to receive(:delete_all).once.with({metadata.foreign_key.to_s => id})
       persisted_relation.delete_all
     end
 
-    it "destroys all teams" do
-      expect(target_class).to receive(:destroy_all).once.with({metadata.foreign_key.to_s => persisted_base.id})
+    it "destroys all targets" do
+      id = persisted_base.id
+      id = id.is_a?(BSON::ObjectId) ? id.to_s : id
+      expect(target_class).to receive(:destroy_all).once.with({metadata.foreign_key.to_s => id})
       persisted_relation.destroy_all
     end
 

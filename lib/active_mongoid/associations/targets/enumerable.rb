@@ -94,7 +94,7 @@ module ActiveMongoid
         end
 
         def initialize(target)
-          if target.is_a?(::Mongoid::Criteria || ActiveRecord::Relation)
+          if target.is_a?(::Mongoid::Criteria || ::ActiveRecord::Relation)
             @_added, @executed, @_loaded, @_unloaded = {}, false, {}, target
           else
             @_added, @executed = {}, true
@@ -145,7 +145,7 @@ module ActiveMongoid
         end
 
         def reset_unloaded(criteria)
-          @_unloaded = criteria if _unloaded.is_a?(Criteria)
+          @_unloaded = criteria if _unloaded.is_a?(::Mongoid::Criteria || ::ActiveRecord::Relation)
         end
 
         def respond_to?(name, include_private = false)
@@ -188,17 +188,15 @@ module ActiveMongoid
         end
 
         def unloaded_documents
-          blank_criteria?(_unloaded.selector.values) ? [] : _unloaded
+          blank_criteria?(_unloaded) ? [] : _unloaded
         end
 
-        def blank_criteria?(values)
-          if values.is_a?(Array)
-            puts "values: #{values.inspect}"
-            values.any?{|v| blank_criteria?(v)}
-          elsif self == { "_id" => { "$in" => [] }}
-            true
+        def blank_criteria?(_unloaded)
+          if _unloaded.is_a?(::Mongoid::Criteria)
+            _unloaded.selector.values.any?{|v| v == { "_id" => { "$in" => [] }} }
+          elsif _unloaded.is_a?(::ActiveRecord::Relation)
+            false
           else
-            puts "FALSE"
             false
           end
         end

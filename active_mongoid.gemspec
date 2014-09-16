@@ -20,7 +20,8 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "activesupport"
   spec.add_dependency "activerecord"
-  spec.add_dependency "bson_ext"
+  spec.add_dependency "mongo", "~> 1.9.0"
+  spec.add_dependency "bson_ext", "~> 1.9.0"
   spec.add_dependency "mongoid", "~> 2.8.0"
 
   spec.add_development_dependency "rspec"
@@ -33,5 +34,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency 'simplecov-gem-adapter'
   spec.add_development_dependency 'coveralls'
-  spec.add_development_dependency "appraisal"
 end
