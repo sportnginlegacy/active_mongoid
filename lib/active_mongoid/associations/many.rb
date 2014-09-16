@@ -60,7 +60,7 @@ module ActiveMongoid
       def delete(object)
         target.delete(object) do |obj|
           unbind_one(obj) if obj
-          cascade!(obj)
+          cascade!(obj) if obj
         end
       end
 
