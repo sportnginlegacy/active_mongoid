@@ -29,6 +29,7 @@ Mongoid.configure do |config|
     config.master = Mongo::Connection.new.db('active_mongoid_test')
     config.allow_dynamic_fields = false
   end
+  config.identity_map_enabled = false
 end
 
 RSpec.configure do |config|

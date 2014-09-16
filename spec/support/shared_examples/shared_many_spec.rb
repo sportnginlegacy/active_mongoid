@@ -314,15 +314,9 @@ shared_examples "a has_many relation" do
       persisted_relation.clear
     end
 
-    context "delete one" do
-      before do
-        persisted_relation.delete(target_1)
-      end
-
-      it "deletes the specified target" do
-        expect(persisted_relation.map(&:id)).to eq([target_2.id])
-        expect(target_1.send(metadata.foreign_key)).to be_nil
-      end
+    it "deletes the specified target" do
+      expect(persisted_relation.delete(target_1)).to eq(target_1)
+      expect(target_1.send(metadata.foreign_key)).to be_nil
     end
 
     it "deletes all targets" do
