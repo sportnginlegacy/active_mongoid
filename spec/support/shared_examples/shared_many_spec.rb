@@ -310,19 +310,17 @@ shared_examples "a has_many relation" do
       persisted_relation << targets
     end
 
-    after do
-      persisted_relation.clear
-    end
-
     it "deletes the specified target" do
+      expect(target_1.id).to_not be_nil
       expect(persisted_relation.delete(target_1)).to eq(target_1)
       expect(target_1.send(metadata.foreign_key)).to be_nil
+      expect(persisted_relation.first.id).to eq(target_2.id)
     end
 
     it "deletes all targets" do
       id = persisted_base.id
       id = id.is_a?(BSON::ObjectId) ? id.to_s : id
-      expect(target_class).to receive(:delete_all).once.with({metadata.foreign_key.to_s => id})
+      expect(target_class).to receive(:delete_all).once
       persisted_relation.delete_all
     end
 
