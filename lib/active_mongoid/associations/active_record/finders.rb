@@ -26,8 +26,8 @@ module ActiveMongoid
 
           def find(*args)
             key = args.flatten.first
-            if key.is_a?(String) || key.is_a?(BSON::ObjectId)
-              where({_id: key})
+            if !key.is_a?(Fixnum) && (key.is_a?(BSON::ObjectId) || BSON::ObjectId.legal?(key))
+              where({_id: key.to_s}).first
             else
               super(*args)
             end
