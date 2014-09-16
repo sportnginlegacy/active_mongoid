@@ -20,7 +20,9 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "activesupport"
   spec.add_dependency "activerecord"
-  spec.add_dependency "mongoid"
+  spec.add_dependency "mongo", "~> 1.9.0"
+  spec.add_dependency "bson_ext", "~> 1.9.0"
+  spec.add_dependency "mongoid", "~> 2.8.0"
 
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "sqlite3"

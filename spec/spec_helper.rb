@@ -29,6 +29,7 @@ Mongoid.configure do |config|
     config.master = Mongo::Connection.new.db('active_mongoid_test')
     config.allow_dynamic_fields = false
   end
+  config.identity_map_enabled = false
 end
 
 RSpec.configure do |config|
@@ -54,6 +55,7 @@ ActiveRecord::Base.establish_connection :adapter => 'sqlite3', :database => ':me
 ActiveRecord::Schema.define do
   create_table :players, :force => true do |t|
     t.string :name
+    t.string :title
     t.string :team_id
   end
 
