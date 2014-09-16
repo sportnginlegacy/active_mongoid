@@ -40,7 +40,6 @@ module ActiveMongoid
                 return document
               end
             end
-            binding.pry if doc == 0
             yield(doc) if block_given?
           end
         end
@@ -84,7 +83,7 @@ module ActiveMongoid
         end
 
         def initialize(target)
-          if target.is_a?(::Mongoid::Criteria || ::ActiveRecord::Relation)
+          if target.is_a?(::Mongoid::Criteria) || target.is_a?(::ActiveRecord::Relation)
             @added, @loaded, @unloaded = [], [], target
           else
             @added, @executed, @loaded = [], true, target

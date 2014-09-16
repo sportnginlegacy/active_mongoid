@@ -44,12 +44,14 @@ RSpec.configure do |config|
     DatabaseCleaner[:mongoid].clean_with :truncation
   end
 
-  config.around :each do |example|
-    DatabaseCleaner[:active_record].cleaning do
-      DatabaseCleaner[:mongoid].cleaning do
-        example.run
-      end
-    end
+  config.before :each do
+    DatabaseCleaner[:active_record].start
+    DatabaseCleaner[:mongoid].start
+  end
+
+  config.after :each do
+    DatabaseCleaner[:active_record].clean
+    DatabaseCleaner[:mongoid].clean
   end
 end
 
