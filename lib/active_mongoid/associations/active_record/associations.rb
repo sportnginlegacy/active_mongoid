@@ -25,7 +25,6 @@ module ActiveMongoid
           include ActiveRecord::Builders
           include ActiveRecord::AutoSave
           include ActiveRecord::Dependent
-          include ActiveRecord::Finders
         end
 
         def referenced_many_documents?
@@ -35,7 +34,6 @@ module ActiveMongoid
         def referenced_one_document?
           __metadata__ && __metadata__.macro == :has_one_document
         end
-
 
       end
     end
