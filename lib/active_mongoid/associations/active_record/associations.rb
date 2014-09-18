@@ -36,7 +36,6 @@ module ActiveMongoid
           __metadata__ && __metadata__.macro == :has_one_document
         end
 
-
       end
     end
   end
