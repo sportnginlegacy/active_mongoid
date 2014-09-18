@@ -4,6 +4,7 @@ require "active_mongoid/associations/active_record/builders"
 require "active_mongoid/associations/active_record/auto_save"
 require "active_mongoid/associations/active_record/dependent"
 require "active_mongoid/associations/active_record/finders"
+require "active_mongoid/associations/active_record/bson_id"
 require "active_mongoid/associations/active_record/bindings/one"
 require "active_mongoid/associations/active_record/bindings/in"
 require "active_mongoid/associations/active_record/bindings/many"
@@ -25,7 +26,6 @@ module ActiveMongoid
           include ActiveRecord::Builders
           include ActiveRecord::AutoSave
           include ActiveRecord::Dependent
-          include ActiveRecord::Finders
         end
 
         def referenced_many_documents?
