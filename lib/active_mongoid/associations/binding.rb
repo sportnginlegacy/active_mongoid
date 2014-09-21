@@ -1,6 +1,7 @@
 module ActiveMongoid
   module Associations
     class Binding
+      include ::Mongoid::Threaded::Lifecycle
 
       attr_reader :base, :target, :__metadata__
 
@@ -42,14 +43,22 @@ module ActiveMongoid
       def bind_from_relational_parent(object)
         check_inverse!(object)
         bind_foreign_key(object, record_id(base))
-        bind_inverse(object, base)
+        unless _binding?
+          _binding do
+            bind_inverse(object, base)
+          end
+        end
       end
 
       def unbind_from_relational_parent(object)
         check_inverse!(object)
         bind_foreign_key(object, nil)
         # bind_polymorphic_type(object, nil)
-        bind_inverse(object, nil)
+        unless _binding?
+          _binding do
+            bind_inverse(object, nil)
+          end
+        end
       end
 
     end
