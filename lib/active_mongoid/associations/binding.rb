@@ -1,4 +1,5 @@
-require 'mongoid'
+require 'mongoid/threaded'
+
 module ActiveMongoid
   module Associations
     class Binding
