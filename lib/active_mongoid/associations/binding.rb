@@ -1,3 +1,4 @@
+require 'mongoid'
 module ActiveMongoid
   module Associations
     class Binding
