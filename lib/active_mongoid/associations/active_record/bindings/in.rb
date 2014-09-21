@@ -7,12 +7,16 @@ module ActiveMongoid
           def bind_one
             check_inverse!(target)
             bind_foreign_key(base, record_id(target))
-            if inverse = __metadata__.inverse
-              if set_base_metadata
-                if base.referenced_many_documents?
-                  target.__send__(inverse).push(base)
-                else
-                  target.set_record_relation(inverse, base)
+            unless _binding?
+              _binding do
+                if inverse = __metadata__.inverse
+                  if set_base_metadata
+                    if base.referenced_many_documents?
+                      target.__send__(inverse).push(base)
+                    else
+                      target.set_record_relation(inverse, base)
+                    end
+                  end
                 end
               end
             end
@@ -21,12 +25,16 @@ module ActiveMongoid
           def unbind_one
             inverse = __metadata__.inverse
             bind_foreign_key(base, nil)
-            if inverse
-              set_base_metadata
-              if base.referenced_many_documents?
-                target.__send__(inverse).delete(base)
-              else
-                target.set_record_relation(inverse, nil)
+            unless _binding?
+              _binding do
+                if inverse
+                  set_base_metadata
+                  if base.referenced_many_documents?
+                    target.__send__(inverse).delete(base)
+                  else
+                    target.set_record_relation(inverse, nil)
+                  end
+                end
               end
             end
           end

@@ -141,6 +141,14 @@ module ActiveMongoid
           entries.uniq
         end
 
+        def where(opts = :chain, *rest)
+          if unloaded.is_a?(::Mongoid::Criteria) || unloaded.is_a?(::ActiveRecord::Relation)
+            unloaded.where(opts, *rest)
+          else
+            raise NoMethodError
+          end
+        end
+
         private
 
         def method_missing(name, *args, &block)
