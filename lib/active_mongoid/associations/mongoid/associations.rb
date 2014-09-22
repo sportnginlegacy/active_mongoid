@@ -34,17 +34,6 @@ module ActiveMongoid
           __metadata__ && __metadata__.macro == :has_one_record
         end
 
-
-        def reload_relations
-          am_relations.each_pair do |name, meta|
-            if instance_variable_defined?("@#{name}")
-              if instance_variable_get("@#{name}")
-                remove_instance_variable("@#{name}")
-              end
-            end
-          end
-        end
-
       end
     end
   end
