@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ActiveMongoid::Associations::Mongoid::Builders do
+describe ActiveMongoid::Associations::RecordRelation::Builders do
 
   describe "#build_#\{name}" do
 

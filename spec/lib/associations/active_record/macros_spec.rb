@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ActiveMongoid::Associations::ActiveRecord::Macros do
+describe ActiveMongoid::Associations::DocumentRelation::Macros do
 
   ActiveRecord::Schema.define do
   create_table :active_record_test_classes, :force => true do |t|
@@ -58,7 +58,7 @@ end
 
       it "creates the correct relation" do
         expect(klass.am_relations["person"].relation).to eq(
-          ActiveMongoid::Associations::ActiveRecord::Referenced::One
+          ActiveMongoid::Associations::DocumentRelation::Referenced::One
         )
       end
 

@@ -1,6 +1,6 @@
 class Player < ActiveRecord::Base
   include ActiveMongoid::Associations
-  include ActiveMongoid::Associations::ActiveRecord::Finders
+  include ActiveMongoid::Associations::DocumentRelation::Finders
 
   belongs_to_document :team
   has_one_document :person

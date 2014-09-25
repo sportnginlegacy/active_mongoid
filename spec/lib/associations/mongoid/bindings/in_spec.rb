@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ActiveMongoid::Associations::Mongoid::Bindings::In do
+describe ActiveMongoid::Associations::RecordRelation::Bindings::In do
 
   let(:person) do
     Person.new
