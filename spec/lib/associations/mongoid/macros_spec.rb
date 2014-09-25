@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ActiveMongoid::Associations::Mongoid::Macros do
+describe ActiveMongoid::Associations::DocumentRelation::Macros do
 
   class MongoidTestClass
     include Mongoid::Document
@@ -45,7 +45,7 @@ describe ActiveMongoid::Associations::Mongoid::Macros do
 
       it "creates the correct relation" do
         expect(klass.am_relations["person"].relation).to eq(
-          ActiveMongoid::Associations::Mongoid::Referenced::In
+          ActiveMongoid::Associations::DocumentRelation::Referenced::In
         )
       end
 

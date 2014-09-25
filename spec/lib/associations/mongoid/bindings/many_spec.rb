@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ActiveMongoid::Associations::ActiveRecord::Bindings::Many do
+describe ActiveMongoid::Associations::RecordRelation::Bindings::Many do
 
   let(:team) do
     Team.new

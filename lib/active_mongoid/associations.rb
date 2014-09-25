@@ -7,8 +7,8 @@ require "active_mongoid/associations/many"
 require "active_mongoid/associations/builders/in"
 require "active_mongoid/associations/builders/one"
 require "active_mongoid/associations/builders/many"
-require "active_mongoid/associations/active_record/associations"
-require "active_mongoid/associations/mongoid/associations"
+require "active_mongoid/associations/record_relation/associations"
+require "active_mongoid/associations/document_relation/associations"
 require "active_mongoid/associations/targets/enumerable"
 require 'after_do'
 
@@ -22,9 +22,9 @@ module ActiveMongoid
       self.am_relations = {}
 
       if defined?(::ActiveRecord::Base) && self <= ::ActiveRecord::Base
-        include ActiveRecord::Associations
+        include RecordRelation::Associations
       elsif defined?(::Mongoid::Document) && self.included_modules.include?(::Mongoid::Document)
-        include Mongoid::Associations
+        include DocumentRelation::Associations
       else
         raise
       end

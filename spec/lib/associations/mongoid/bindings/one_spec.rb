@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ActiveMongoid::Associations::Mongoid::Bindings::One do
+describe ActiveMongoid::Associations::DocumentRelation::Bindings::One do
 
   let(:league){ League.new }
 

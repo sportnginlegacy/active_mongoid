@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ActiveMongoid::Associations::ActiveRecord::Bindings::One do
+describe ActiveMongoid::Associations::RecordRelation::Bindings::One do
 
   let(:player) do
     Player.new

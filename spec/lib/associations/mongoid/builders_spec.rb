@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ActiveMongoid::Associations::Mongoid::Builders do
+describe ActiveMongoid::Associations::DocumentRelation::Builders do
 
   describe "#build_#\{name}" do
 
@@ -114,5 +114,20 @@ describe ActiveMongoid::Associations::Mongoid::Builders do
 
   end
 
+
+    describe "#create_#\{name}" do
+
+    context "when the relation is a has_one" do
+
+      let(:league) do
+        League.create
+      end
+
+      it "asd" do
+        expect(league.as_json).to_not be_nil
+      end
+
+    end
+  end
 
 end

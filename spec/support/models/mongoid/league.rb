@@ -1,6 +1,7 @@
 class League
   include Mongoid::Document
-  include ActiveMongoid::Associations
+  include ActiveMongoid
+  include Mongoid::JSON
 
   field :name
 
