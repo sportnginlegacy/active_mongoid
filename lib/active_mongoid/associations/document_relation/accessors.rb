@@ -27,7 +27,7 @@ module ActiveMongoid
             if object && needs_no_database_query?(object, metadata)
               build_document(name, object, metadata)
             else
-              build_document(name, attributes[metadata.key], metadata)
+              build_document(name, self.send(metadata.key), metadata)
             end
           end
         end
