@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ActiveMongoid::Associations::ActiveRecord::Bindings::In do
+describe ActiveMongoid::Associations::RecordRelation::Bindings::In do
 
   let(:division) do
     Division.new

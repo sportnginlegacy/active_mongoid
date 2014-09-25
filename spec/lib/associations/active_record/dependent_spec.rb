@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ActiveMongoid::Associations::ActiveRecord::Dependent do
+describe ActiveMongoid::Associations::RecordRelation::Dependent do
 
   describe ".dependent_documents" do
 

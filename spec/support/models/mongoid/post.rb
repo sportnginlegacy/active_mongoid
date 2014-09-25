@@ -1,6 +1,7 @@
 class Post
   include Mongoid::Document
-  include ActiveMongoid::Associations
+  include ActiveMongoid
+
 
   field :name
 

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ActiveMongoid::Associations::ActiveRecord::Accessors do
+describe ActiveMongoid::Associations::RecordRelation::Accessors do
 
   describe "#\{name}=" do
 

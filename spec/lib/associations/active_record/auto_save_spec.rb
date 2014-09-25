@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ActiveMongoid::Associations::ActiveRecord::AutoSave do
+describe ActiveMongoid::Associations::RecordRelation::AutoSave do
 
   describe ".autosave_documents" do
 
