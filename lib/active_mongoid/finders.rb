@@ -14,9 +14,11 @@ module ActiveMongoid
       end
 
       def where(opts = :chain, *rest)
-        bson_opts = opts.select{|k,v| v.is_a?(BSON::ObjectId)}
-        bson_opts.map{|k,v| bson_opts[k] = v.to_s}
-        opts.merge!(bson_opts)
+        unless opts.is_a?(String)
+          bson_opts = opts.select{|k,v| v.is_a?(BSON::ObjectId)}
+          bson_opts.map{|k,v| bson_opts[k] = v.to_s}
+          opts.merge!(bson_opts)
+        end
         super(opts, *rest)
       end
 
