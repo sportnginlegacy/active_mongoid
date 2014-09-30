@@ -1,6 +1,6 @@
 class Division < ActiveRecord::Base
   include ActiveMongoid::Associations
-  include ActiveMongoid::Associations::ActiveRecord::Finders
+  include ActiveMongoid::Finders
 
   has_many_documents :teams
   belongs_to_document :league

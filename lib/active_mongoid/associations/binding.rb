@@ -21,6 +21,7 @@ module ActiveMongoid
       end
 
       def bind_foreign_key(base, id)
+        return if base.send(__metadata__.foreign_key) == id
         base.send(__metadata__.foreign_key_setter, id)
       end
 

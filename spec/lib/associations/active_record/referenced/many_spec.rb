@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ActiveMongoid::Associations::ActiveRecord::Referenced::Many do
+describe ActiveMongoid::Associations::DocumentRelation::Referenced::Many do
 
   describe ".criteria" do
 

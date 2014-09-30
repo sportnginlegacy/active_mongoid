@@ -1,4 +1,6 @@
 require "active_mongoid/associations"
+require "active_mongoid/bson_id"
+require "active_mongoid/finders"
 
 module ActiveMongoid
   # Your code goes here...
