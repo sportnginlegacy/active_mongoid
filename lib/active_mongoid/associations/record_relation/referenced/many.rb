@@ -113,7 +113,7 @@ module ActiveMongoid
             end
 
             def criteria(metadata, object, type = nil)
-              metadata.klass.where(metadata.foreign_key => object)
+              metadata.klass.where(metadata.foreign_key => object.to_s)
             end
 
           end
