@@ -1,7 +1,7 @@
 module ActiveMongoid
   class FinderProxy
     instance_methods.each do |method|
-      undef_method(method) unless method =~ /(^__|^send|^object_id|^respond_to|^tap)/
+      undef_method(method) unless method =~ /(^object_id|^tap)/
     end
 
     attr_accessor :target
