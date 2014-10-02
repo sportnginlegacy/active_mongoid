@@ -36,7 +36,7 @@ module ActiveMongoid
       end
 
       def bson_attr_init(name)
-        init_method = :"init_attr_for_#{metadata.name}"
+        init_method = :"init_attr_for_#{name}"
         define_method(init_method) do
           self.send("#{name}=", BSON::ObjectId.new) unless read_attribute(name)
         end
