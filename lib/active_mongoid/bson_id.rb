@@ -29,7 +29,7 @@ module ActiveMongoid
         end
       end
 
-      def bsob_attr_getter(name)
+      def bson_attr_getter(name)
         self.instance_eval do
           define_method(name) do
             attribute = read_attribute(name)
