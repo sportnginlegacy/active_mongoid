@@ -4,7 +4,7 @@ module ActiveMongoid
       module AutoSave
         extend ActiveSupport::Concern
 
-        def changed_for_autosave?(obj)
+        def document_changed_for_autosave?(obj)
           obj.new_record? || obj.changed? || obj.marked_for_destruction?
         end
 
@@ -15,7 +15,7 @@ module ActiveMongoid
               save_method = :"autosave_documents_for_#{metadata.name}"
               define_method(save_method) do
                 if relation = instance_variable_get("@#{metadata.name}")
-                  Array(relation).each { |d| d.save if changed_for_autosave?(d) }
+                  Array(relation).each { |d| d.save if document_changed_for_autosave?(d) }
                 end
               end
 
