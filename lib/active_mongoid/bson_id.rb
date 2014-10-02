@@ -2,11 +2,6 @@ module ActiveMongoid
   module BsonId
     extend ActiveSupport::Concern
 
-    included do
-      bsonify_attr :_id, initialize: true
-      after_initialize :set_bson_id
-    end
-
     module ClassMethods
 
       def bsonify_attr(name, options = {})
