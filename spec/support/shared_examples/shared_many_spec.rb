@@ -344,14 +344,6 @@ shared_examples "a has_many relation" do
       expect(persisted_relation).to eq([target_1])
     end
 
-    it "deletes all targets" do
-
-    end
-
-    it "destroys all targets" do
-
-    end
-
   end
 
   context ".find" do
