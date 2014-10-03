@@ -1,7 +1,7 @@
 module ActiveMongoid
   class FinderProxy
     instance_methods.each do |method|
-      undef_method(method) unless method =~ /(^__|^object_id|^tap)/
+      undef_method(method) unless method =~ /(^object_id|^tap)/
     end
 
     attr_accessor :target
@@ -23,13 +23,19 @@ module ActiveMongoid
 
     def where(opts = :chain, *rest)
       unless opts.is_a?(String)
-        bson_opts = opts.select{|k,v| v.is_a?(BSON::ObjectId)}
-        bson_opts.each do |k,v|
-          _k = (k == :id) ? :_id : k
-          bson_opts[_k] = v.to_s
+          bson_opts = opts.select{|k,v| v.is_a?(BSON::ObjectId)}
+
+          if bson_opts[:id]
+            opts.delete(:id)
+            bson_opts[:_id] = bson_opts.delete(:id)
+          end
+
+          bson_opts.each do |k,v|
+            bson_opts[k] = v.to_s
+          end
+
+          opts.merge!(bson_opts)
         end
-        opts.merge!(bson_opts)
-      end
       FinderProxy.new(target.send(:where, opts, *rest))
     end
 

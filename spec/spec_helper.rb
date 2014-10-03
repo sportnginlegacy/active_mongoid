@@ -70,6 +70,7 @@ ActiveRecord::Schema.define do
     t.string :name
     t.string :league_id
     t.string :pid
+    t.string :sport_id
   end
 
   create_table :division_settings, :force => true do |t|
