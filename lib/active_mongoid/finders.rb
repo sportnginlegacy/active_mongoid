@@ -33,6 +33,18 @@ module ActiveMongoid
         FinderProxy.new(super(opts, *rest))
       end
 
+      def includes(*args)
+        FinderProxy.new(super(*args))
+      end
+
+      def scoped(options = nil)
+        FinderProxy.new(super(options))
+      end
+
+      def merge(options = nil)
+        FinderProxy.new(super(options))
+      end
+
     end
   end
 end
