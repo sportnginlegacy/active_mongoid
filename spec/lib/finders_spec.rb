@@ -28,7 +28,7 @@ describe ActiveMongoid::Finders do
 
     describe "when scoped" do
 
-      let(:scoped_klass) { klass.where(name: division.name) }
+      let(:scoped_klass) { klass.by_name(division.name) }
 
       it "returns object when request with object fixnum id" do
         expect(scoped_klass.find(division.id)).to eq(division)
@@ -80,7 +80,7 @@ describe ActiveMongoid::Finders do
 
     describe "when scoped" do
 
-      let(:scoped_klass) { klass.where(name: division.name) }
+      let(:scoped_klass) { klass.by_name(division.name) }
 
       it "returns relation by bson_id" do
         expect(scoped_klass.where(sport_id: bson_id)).to eq([division])
