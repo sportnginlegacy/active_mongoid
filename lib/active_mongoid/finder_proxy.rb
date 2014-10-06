@@ -52,7 +52,12 @@ module ActiveMongoid
     end
 
     def method_missing(name, *args, &block)
-      __target.send(name, *args, &block)
+      resp = __target.send(name, *args, &block)
+      resp.is_a?(ActiveRecord::Relation) ? FinderProxy.new(resp) : resp
+    end
+
+    def clone
+      FinderProxy.new(__target.clone)
     end
 
   end

@@ -1,8 +1,8 @@
 require "spec_helper"
 
 describe ActiveMongoid::Finders do
-  let(:klass) { Division }
-  let(:division) { klass.create(name: 'foo') }
+  let(:klass) { Division.am_scoped }
+  let(:division) { Division.create(name: 'foo') }
 
   describe ".find" do
 
