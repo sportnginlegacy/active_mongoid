@@ -1,13 +1,16 @@
 module ActiveMongoid
   class FinderProxy
     instance_methods.each do |method|
-      undef_method(method) unless method =~ /(^__|^object_id|^tap)/
+      undef_method(method) unless method =~ /(^__|^tap)/
     end
 
     attr_accessor :__target
+    attr_accessor :__target_class
+
 
     def initialize(target)
       @__target = target
+      @__target_class = target.respond_to?(:klass) ? target.klass : target
     end
 
     def find(*args)
@@ -39,25 +42,13 @@ module ActiveMongoid
       FinderProxy.new(__target.send(:where, opts, *rest))
     end
 
-    def includes(*args)
-      FinderProxy.new(__target.send(:includes, *args))
-    end
-
-    def scoped(options = nil)
-      FinderProxy.new(__target.send(:scoped, options))
-    end
-
-    def merge(options = nil)
-      FinderProxy.new(__target.send(:merge, options))
-    end
-
     def method_missing(name, *args, &block)
       resp = __target.send(name, *args, &block)
-      resp.is_a?(ActiveRecord::Relation) ? FinderProxy.new(resp) : resp
-    end
-
-    def clone
-      FinderProxy.new(__target.clone)
+      if resp == __target_class || (resp.is_a?(ActiveRecord::Relation) && resp.klass == __target_class)
+        FinderProxy.new(resp)
+      else
+        resp
+      end
     end
 
   end
