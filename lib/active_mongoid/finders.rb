@@ -30,11 +30,11 @@ module ActiveMongoid
 
           opts.merge!(bson_opts)
         end
-        FinderProxy.new(super.where(opts, *rest))
+        FinderProxy.new(super(opts, *rest))
       end
 
-      def scoped(opts = nil)
-        FinderProxy.new(super(opts))
+      def scoped(options = nil)
+        FinderProxy.new(super(options))
       end
 
       def includes(*args)
@@ -43,6 +43,16 @@ module ActiveMongoid
 
       def joins(*args)
         FinderProxy.new(super(*args))
+      end
+
+      def select(select = nil)
+        FinderProxy.new(
+          if block_given?
+            load_target.select.each { |e| yield e }
+          else
+            scoped.select(select)
+          end
+        )
       end
 
     end
