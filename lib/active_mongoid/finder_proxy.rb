@@ -25,7 +25,7 @@ module ActiveMongoid
     end
 
     def where(opts = :chain, *rest)
-      if opts && opts.respond_to?(:select)
+      if opts && opts.is_a?(Hash)
         bson_opts = opts.select{|k,v| v.is_a?(BSON::ObjectId)}
 
         if bson_opts[:id]
