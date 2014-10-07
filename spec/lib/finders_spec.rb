@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe ActiveMongoid::Finders do
   let(:klass) { Division }
-  let(:division) { Division.create(name: 'foo') }
+  let(:division) { klass.create(name: 'foo') }
 
   describe ".find" do
 
