@@ -7,24 +7,36 @@ require "active_mongoid/associations/many"
 require "active_mongoid/associations/builders/in"
 require "active_mongoid/associations/builders/one"
 require "active_mongoid/associations/builders/many"
-require "active_mongoid/associations/active_record/associations"
-require "active_mongoid/associations/mongoid/associations"
+require "active_mongoid/associations/document_relation/associations"
+require "active_mongoid/associations/record_relation/associations"
 require "active_mongoid/associations/targets/enumerable"
+require 'after_do'
 
 module ActiveMongoid
   module Associations
     extend ActiveSupport::Concern
 
     included do
+      extend ::AfterDo
       class_attribute :am_relations
       self.am_relations = {}
 
       if defined?(::ActiveRecord::Base) && self <= ::ActiveRecord::Base
-        include ActiveRecord::Associations
+        include DocumentRelation::Associations
       elsif defined?(::Mongoid::Document) && self.included_modules.include?(::Mongoid::Document)
-        include Mongoid::Associations
+        include RecordRelation::Associations
       else
         raise
+      end
+
+      before :reload do
+        am_relations.each_pair do |name, meta|
+          if instance_variable_defined?("@#{name}")
+            if instance_variable_get("@#{name}")
+              remove_instance_variable("@#{name}")
+            end
+          end
+        end
       end
     end
 

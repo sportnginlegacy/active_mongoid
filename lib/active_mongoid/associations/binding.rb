@@ -1,6 +1,9 @@
+require 'mongoid/threaded'
+
 module ActiveMongoid
   module Associations
     class Binding
+      include ::Mongoid::Threaded::Lifecycle
 
       attr_reader :base, :target, :__metadata__
 
@@ -18,6 +21,7 @@ module ActiveMongoid
       end
 
       def bind_foreign_key(base, id)
+        return if base.send(__metadata__.foreign_key) == id
         base.send(__metadata__.foreign_key_setter, id)
       end
 
@@ -44,7 +48,7 @@ module ActiveMongoid
       end
 
       def bind_polymorphic_type(object, name)
-        if metadata.type
+        if __metadata__.type
           object.send(__metadata__.type_setter, name)
         end
       end

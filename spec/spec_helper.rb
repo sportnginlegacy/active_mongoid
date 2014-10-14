@@ -13,6 +13,9 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
 
 SimpleCov.start 'gem'
 
+require 'i18n'
+I18n.enforce_available_locales = false
+
 require 'mongoid'
 require 'active_record'
 require 'active_mongoid'
@@ -29,6 +32,7 @@ Mongoid.configure do |config|
     config.master = Mongo::Connection.new.db('active_mongoid_test')
     config.allow_dynamic_fields = false
   end
+  config.identity_map_enabled = false
 end
 
 RSpec.configure do |config|
@@ -40,12 +44,14 @@ RSpec.configure do |config|
     DatabaseCleaner[:mongoid].clean_with :truncation
   end
 
-  config.around :each do |example|
-    DatabaseCleaner[:active_record].cleaning do
-      DatabaseCleaner[:mongoid].cleaning do
-        example.run
-      end
-    end
+  config.before :each do
+    DatabaseCleaner[:active_record].start
+    DatabaseCleaner[:mongoid].start
+  end
+
+  config.after :each do
+    DatabaseCleaner[:active_record].clean
+    DatabaseCleaner[:mongoid].clean
   end
 end
 
@@ -53,16 +59,22 @@ end
 ActiveRecord::Base.establish_connection :adapter => 'sqlite3', :database => ':memory:'
 ActiveRecord::Schema.define do
   create_table :players, :force => true do |t|
+    t.string :_id
     t.string :name
+    t.string :title
     t.string :team_id
   end
 
   create_table :divisions, :force => true do |t|
+    t.string :_id
     t.string :name
     t.string :league_id
+    t.string :pid
+    t.string :sport_id
   end
 
   create_table :division_settings, :force => true do |t|
+    t.string :_id
     t.string :name
     t.string :league_id
   end

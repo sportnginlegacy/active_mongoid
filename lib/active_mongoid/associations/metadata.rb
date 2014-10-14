@@ -68,8 +68,7 @@ module ActiveMongoid
         if relation.stores_foreign_key?
           relation.foreign_key(name)
         else
-          suffix = relation.foreign_key_suffix
-          "#{inverse}#{suffix}"
+          inverse_metadata.foreign_key
         end
       end
 

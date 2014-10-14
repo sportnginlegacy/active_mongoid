@@ -50,7 +50,7 @@ module ActiveMongoid
           criteria.delete_all
           many = target.clear do |obj|
             unbind_one(obj)
-            obj.destroyed = true
+            obj.destroyed = true if obj.respond_to?(:destroyed=)
           end
           many
         end
@@ -60,7 +60,7 @@ module ActiveMongoid
       def delete(object)
         target.delete(object) do |obj|
           unbind_one(obj) if obj
-          cascade!(obj)
+          cascade!(obj) if obj
         end
       end
 
