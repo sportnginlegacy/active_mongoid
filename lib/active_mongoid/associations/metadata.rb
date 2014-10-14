@@ -16,6 +16,10 @@ module ActiveMongoid
         merge!(properties)
       end
 
+      def as
+        self[:as]
+      end
+
       def autosave
         self[:autosave]
       end
@@ -184,10 +188,29 @@ module ActiveMongoid
         @destructive ||= (dependent == :delete || dependent == :destroy)
       end
 
+      def polymorphic?
+        @polymorphic ||= (!!self[:as] || !!self[:polymorphic])
+      end
+
       def type
         @type ||= polymorphic? ? "#{as}_type" : nil
       end
 
+      def type_setter
+        @type_setter ||= "#{type}="
+      end
+
+      def determine_inverse_for(field)
+        relation.stores_foreign_key? && polymorphic? ? "#{name}_#{field}" : nil
+      end
+
+      def inverse_type
+        @inverse_type ||= determine_inverse_for(:type)
+      end
+
+      def inverse_type_setter
+        @inverse_type_setter ||= "#{inverse_type}="
+      end
 
     end
   end
