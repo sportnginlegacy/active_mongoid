@@ -6,7 +6,7 @@ class Division < ActiveRecord::Base
   has_many_documents :teams
   belongs_to_document :league
   belongs_to_document :post, foreign_key: :pid
-  has_one_document :stat, as: :target, polymorphic: true
+  has_many_documents :stats, as: :target
 
   scope :sport_id, ->(id){ where(sport_id: id) }
   scope :by_name, ->(n){ where(name: n) }
