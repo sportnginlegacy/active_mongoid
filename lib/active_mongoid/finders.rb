@@ -16,7 +16,7 @@ module ActiveMongoid
       end
 
       def where(opts = :chain, *rest)
-        unless opts.is_a?(String)
+        if opts && opts.respond_to?(:select)
           bson_opts = opts.select{|k,v| v.is_a?(BSON::ObjectId)}
 
           if bson_opts[:id]
@@ -33,16 +33,26 @@ module ActiveMongoid
         FinderProxy.new(super(opts, *rest))
       end
 
-      def includes(*args)
-        FinderProxy.new(super(*args))
-      end
-
       def scoped(options = nil)
         FinderProxy.new(super(options))
       end
 
-      def merge(options = nil)
-        FinderProxy.new(super(options))
+      def includes(*args)
+        FinderProxy.new(super(*args))
+      end
+
+      def joins(*args)
+        FinderProxy.new(super(*args))
+      end
+
+      def select(select = nil)
+        FinderProxy.new(
+          if block_given?
+            load_target.select.each { |e| yield e }
+          else
+            scoped.select(select)
+          end
+        )
       end
 
     end
