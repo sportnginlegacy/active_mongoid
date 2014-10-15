@@ -15,7 +15,7 @@ module ActiveMongoid
 
         def create_record_relation(object, metadata)
           type = self.attributes[metadata.inverse_type]
-          target = metadata.builder(self, object).build(type)
+          target = metadata.builder(self, object).build(type) if object
           target ? metadata.relation.new(self, target, metadata) : nil
         end
 

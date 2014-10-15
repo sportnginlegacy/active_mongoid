@@ -141,7 +141,6 @@ module ActiveMongoid
 
       def inverse(other = nil)
         invs = inverses(other)
-        # binding.pry
         invs.first if invs.count == 1
       end
 

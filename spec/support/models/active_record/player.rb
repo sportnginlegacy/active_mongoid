@@ -3,7 +3,7 @@ class Player < ActiveRecord::Base
   include ActiveMongoid::Finders
   include ActiveMongoid::BsonId
 
-  bsonify_attr :_id
+  bsonify_attr :_id, initialize: true
 
   belongs_to_document :team
   has_one_document :person

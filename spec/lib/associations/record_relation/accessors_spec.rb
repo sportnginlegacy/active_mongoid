@@ -148,20 +148,20 @@ describe ActiveMongoid::Associations::RecordRelation::Accessors do
           stat.target = player
         end
 
-        xit "builds the record" do
+        it "builds the record" do
           expect(stat).to have_target
         end
 
-        xit "sets the attributes" do
+        it "sets the attributes" do
           expect(stat.target_id).to eq(player.id)
           expect(stat.target_type).to eq(player.class.to_s)
         end
 
-        xit "reloads the record" do
+        it "reloads the record" do
           expect(stat.target(true)).to eq(player)
         end
 
-        xit "binds the inverse" do
+        it "binds the inverse" do
           expect(player.stat).to eq(stat)
         end
       end
@@ -262,9 +262,13 @@ describe ActiveMongoid::Associations::RecordRelation::Accessors do
       end
 
       context "when relation is polymorphic" do
-        let!(:address) { Address.create(target_id: league.id, target_type: league.class) }
+        let!(:address) { Address.create }
 
-        xit "finds the record" do
+        before do
+          league.address = address
+        end
+
+        it "finds the record" do
           expect(league.address).to eq(address)
         end
       end
