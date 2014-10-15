@@ -67,6 +67,22 @@ describe ActiveMongoid::Associations::DocumentRelation::Accessors do
 
       end
 
+      context "when the relation is polymorphic" do
+        let(:stat) { Stat.new }
+        before do
+          player.stat = stat
+        end
+
+        it "builds the document" do
+          expect(player).to have_stat
+        end
+
+        it "binds the reverse" do
+          expect(stat).to have_target
+          expect(stat.target).to eq(player)
+        end
+      end
+
     end
 
     context "when relation is a belongs_to" do
@@ -113,6 +129,32 @@ describe ActiveMongoid::Associations::DocumentRelation::Accessors do
           expect(division.league_id).to eq(new_league.id)
         end
 
+      end
+
+      context "when the relation is polymorphic" do
+        let(:address) { Address.create }
+        let(:league) { League.create }
+
+        before do
+          address.target = league
+        end
+
+        it "builds the document" do
+          expect(address).to have_target
+        end
+
+        it "sets the attributes" do
+          expect(address.target_id).to eq(league.id)
+          expect(address.target_type).to eq(league.class.to_s)
+        end
+
+        it "reloads the document" do
+          expect(address.target(true)).to eq(league)
+        end
+
+        it "binds the inverse" do
+          expect(league.address).to eq(address)
+        end
       end
 
     end
@@ -165,6 +207,28 @@ describe ActiveMongoid::Associations::DocumentRelation::Accessors do
 
       end
 
+      context "when the relation is polymorphic" do
+        let(:address) { Address.new }
+        let(:person) { Person.create }
+
+        before do
+          person.addresses = [address]
+        end
+
+        it "builds the document" do
+          expect(person.addresses).to eq([address])
+        end
+
+        it "sets the attributes" do
+          expect(address.target_id).to eq(person.id)
+          expect(address.target_type).to eq(person.class.to_s)
+        end
+
+        it "binds the inverse" do
+          expect(address).to have_target
+        end
+      end
+
     end
 
   end
@@ -172,14 +236,9 @@ describe ActiveMongoid::Associations::DocumentRelation::Accessors do
   describe "#\{name}" do
 
     context "when the relation is a has_one_document" do
-
-      let(:player) do
-        Player.create
-      end
-
+      let(:player) { Player.create }
 
       context "when relation exists" do
-
         before do
           Person.create(player_id: player.id)
         end
@@ -187,27 +246,29 @@ describe ActiveMongoid::Associations::DocumentRelation::Accessors do
         it "finds the document" do
           expect(player).to have_person
         end
-
       end
 
       context "when relation does not exist" do
-
         it "does not find the document" do
           expect(player).to_not have_person
         end
-
       end
 
+      context "when relation is polymorphic" do
+        let!(:stat) { Stat.create(target_id: player.id, target_type: player.class) }
+
+        it "finds the document" do
+          expect(player.stat).to eq(stat)
+        end
+      end
     end
 
     context "when the relation is a belongs_to_document" do
-
       let(:league) do
         League.create
       end
 
       context "when relation exists" do
-
         let(:division) do
           Division.new(league_id: league.id)
         end
@@ -216,11 +277,9 @@ describe ActiveMongoid::Associations::DocumentRelation::Accessors do
           expect(division).to have_league
           expect(division.league).to eq(league)
         end
-
       end
 
       context "when relation does not exist" do
-
         let(:divison) do
           Division.new
         end
@@ -228,20 +287,24 @@ describe ActiveMongoid::Associations::DocumentRelation::Accessors do
         it "does not find record" do
           expect(divison).to_not have_league
         end
+      end
 
+      context "when relation is polymorphic" do
+        let(:address) { Address.create(target_id: league.id, target_type: league.class) }
+
+        it "finds the document" do
+          expect(address.target).to eq(league)
+        end
       end
 
     end
 
     context "when the relation is a has_many_documents" do
-
       let(:division) do
         Division.create
       end
 
-
       context "when relation exists" do
-
         before do
           Team.create(division: division.id)
         end
@@ -249,15 +312,20 @@ describe ActiveMongoid::Associations::DocumentRelation::Accessors do
         it "finds the document" do
           expect(division).to have_teams
         end
-
       end
 
       context "when relation does not exist" do
-
         it "does not find the document" do
           expect(division).to_not have_teams
         end
+      end
 
+      context "when relation is polymorphic" do
+        let!(:stat) { Stat.create(target_id: division.id, target_type: division.class) }
+
+        it "finds the document" do
+          expect(division.stats).to eq([stat])
+        end
       end
 
     end
