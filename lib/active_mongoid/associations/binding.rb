@@ -33,7 +33,7 @@ module ActiveMongoid
 
       def bind_polymorphic_inverse_type(base, name)
         if __metadata__.inverse_type
-          base.send(metadata.inverse_type_setter, name)
+          base.send(__metadata__.inverse_type_setter, name)
         end
       end
 
@@ -58,7 +58,7 @@ module ActiveMongoid
       end
 
       def set_base_metadata
-        inverse_metadata = __metadata__.inverse_metadata
+        inverse_metadata = __metadata__.inverse_metadata(target)
         if inverse_metadata != __metadata__ && !inverse_metadata.nil?
           base.__metadata__ = inverse_metadata
         end

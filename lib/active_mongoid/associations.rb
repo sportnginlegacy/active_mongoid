@@ -40,7 +40,15 @@ module ActiveMongoid
       end
     end
 
+    def reflect_on_am_association(name)
+      self.class.reflect_on_am_association(name.to_s)
+    end
+
     module ClassMethods
+
+      def reflect_on_am_association(name)
+        am_relations[name.to_s]
+      end
 
       private
 

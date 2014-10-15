@@ -73,9 +73,13 @@ module ActiveMongoid
       end
 
       def object_class
-        (self[:class_name] || name.to_s.singularize.titleize.delete(' ')).constantize
+        class_name.constantize
       end
       alias_method :klass, :object_class
+
+      def class_name
+        (self[:class_name] || name.to_s.singularize.titleize.delete(' ')).sub(/\A::/,"")
+      end
 
       def name
         self[:name].to_s
@@ -94,7 +98,7 @@ module ActiveMongoid
       end
 
       def inverse_klass
-        @inverse_klass ||= inverse_class_name.constantize
+        @inverse_klass ||= inverse_class_name.constantize if inverse_class_name
       end
 
       def inverse_class_name
@@ -117,8 +121,9 @@ module ActiveMongoid
         return [ inverse_of ] if inverse_of
         if other
           matches = []
-          other.class.relations.values.each do |meta|
-            if meta.as == name && meta.class_name == inverse_class_name
+          other.class.am_relations.values.each do |meta|
+            if meta.as.to_s == name && meta.class_name == inverse_class_name
+
               matches.push(meta.name)
             end
           end
@@ -136,6 +141,7 @@ module ActiveMongoid
 
       def inverse(other = nil)
         invs = inverses(other)
+        # binding.pry
         invs.first if invs.count == 1
       end
 
@@ -143,12 +149,13 @@ module ActiveMongoid
         self[:inverse_of]
       end
 
-      def inverse_setter
-        "#{inverse}="
+      def inverse_setter(other = nil)
+        "#{inverse(other)}="
       end
 
-      def inverse_metadata
-        object_class.am_relations[inverse]
+      def inverse_metadata(object = nil)
+        object = object || object_class
+        object.reflect_on_am_association(inverse(object))
       end
 
       def determine_inverses
@@ -164,7 +171,13 @@ module ActiveMongoid
       def determine_inverse_relation
         default = foreign_key_match || klass.am_relations[inverse_klass.name.underscore]
         return default.name if default
-        # TODO: raise exception
+        klass.am_relations.each_pair do |key, meta|
+          next if meta.name == name
+          if meta.class_name == inverse_class_name
+            return key.to_sym
+          end
+        end
+        return nil
       end
 
       def foreign_key_match

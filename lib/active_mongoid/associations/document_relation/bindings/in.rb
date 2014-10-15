@@ -10,7 +10,7 @@ module ActiveMongoid
             bind_polymorphic_inverse_type(base, target.class.name)
             unless _binding?
               _binding do
-                if inverse = __metadata__.inverse
+                if inverse = __metadata__.inverse(target)
                   if set_base_metadata
                     if base.referenced_many_documents?
                       target.__send__(inverse).push(base)
@@ -24,7 +24,7 @@ module ActiveMongoid
           end
 
           def unbind_one
-            inverse = __metadata__.inverse
+            inverse = __metadata__.inverse(target)
             bind_foreign_key(base, nil)
             bind_polymorphic_inverse_type(base, nil)
             unless _binding?
