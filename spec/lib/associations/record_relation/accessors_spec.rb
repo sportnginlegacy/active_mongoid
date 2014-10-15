@@ -5,14 +5,10 @@ describe ActiveMongoid::Associations::RecordRelation::Accessors do
   describe "#\{name}=" do
 
     context "when the relation is a has_one" do
-      let(:league) do
-        League.create
-      end
+      let(:league) { League.create }
 
       context "when the relation does not exist" do
-        let!(:division) do
-          league.build_division
-        end
+        let!(:division) { league.build_division }
 
         it "builds the record" do
           expect(league).to have_division
@@ -42,13 +38,8 @@ describe ActiveMongoid::Associations::RecordRelation::Accessors do
       end
 
       context "when the relation already does exist" do
-        let!(:original_division) do
-          league.create_division
-        end
-
-        let(:new_division) do
-          Division.new
-        end
+        let!(:original_division) { league.create_division }
+        let(:new_division) { Division.new }
 
         before do
           league.division = new_division
@@ -65,13 +56,8 @@ describe ActiveMongoid::Associations::RecordRelation::Accessors do
       end
 
       context "when foreign_key is defined" do
-        let(:post) do
-          Post.new
-        end
-
-        let!(:division) do
-          post.build_division
-        end
+        let(:post) { Post.new }
+        let!(:division) { post.build_division }
 
         it "build the document" do
           expect(post).to have_division
@@ -97,20 +83,13 @@ describe ActiveMongoid::Associations::RecordRelation::Accessors do
           expect(address.target).to eq(league)
         end
       end
-
-
     end
 
     context "when the relation is a belongs_to" do
-
-      let(:person) do
-        Person.create
-      end
+      let(:person) { Person.create }
 
       context "when the relation does not exist" do
-        let!(:player) do
-          person.build_player
-        end
+        let!(:player) { person.build_player }
 
         it "builds the record" do
           expect(person).to have_player
@@ -119,13 +98,8 @@ describe ActiveMongoid::Associations::RecordRelation::Accessors do
       end
 
       context "when the relation already does exist" do
-        let!(:original_player) do
-          person.create_player
-        end
-
-        let(:new_player) do
-          Player.new
-        end
+        let!(:original_player) { person.create_player }
+        let(:new_player) { Player.new }
 
         before do
           person.player = new_player
@@ -169,17 +143,10 @@ describe ActiveMongoid::Associations::RecordRelation::Accessors do
     end
 
     context "when the relation is a has_many_records" do
-
-      let(:team) do
-        Team.create
-      end
-
-      let(:players) do
-        [Player.new]
-      end
+      let(:team) { Team.create }
+      let(:players) { [Player.new] }
 
       context "when the relation does not exist" do
-
         before do
           team.players = players
         end
@@ -187,18 +154,11 @@ describe ActiveMongoid::Associations::RecordRelation::Accessors do
         it "builds the record" do
           expect(team).to have_players
         end
-
       end
 
       context "when the relation already exists" do
-
-        let!(:original_players) do
-          [team.players.create]
-        end
-
-        let(:new_players) do
-          [Player.new]
-        end
+        let!(:original_players) { [team.players.create] }
+        let(:new_players) { [Player.new] }
 
         before do
           team.players = new_players
@@ -239,10 +199,7 @@ describe ActiveMongoid::Associations::RecordRelation::Accessors do
   end
 
   describe "#\{name}" do
-
-    let(:league) do
-      League.create
-    end
+    let(:league) { League.create }
 
     context "when the relation is a has_one_record" do
       context "when relation exists" do
