@@ -68,64 +68,104 @@ describe ActiveMongoid::Associations::DocumentRelation::Accessors do
     end
 
     context "when relation is a belongs_to" do
-      let(:division) { Division.create }
+      context "when inverse is has_one_record" do
+        let(:division) { Division.create }
 
-      context "when the relation does not exist" do
+        context "when the relation does not exist" do
 
-        let!(:league) do
-          division.build_league
+          let!(:league) do
+            division.build_league
+          end
+
+          it "builds the document" do
+            expect(division).to have_league
+          end
+
+          it "does not save the document" do
+            expect(league).to_not be_persisted
+          end
+
         end
 
-        it "builds the document" do
-          expect(division).to have_league
+        context "when the relation already exists" do
+          let!(:original_league) { division.create_league }
+          let(:new_league) { League.new }
+
+          before do
+            division.league = new_league
+          end
+
+          it "substitutes new document" do
+            expect(division.league).to eq(new_league)
+          end
+
+          it "removes old relation" do
+            expect(division.league_id).to eq(new_league.id)
+          end
         end
 
-        it "does not save the document" do
-          expect(league).to_not be_persisted
-        end
+        context "when the relation is polymorphic" do
+          let(:address) { Address.create }
+          let(:league) { League.create }
 
+          before do
+            address.target = league
+          end
+
+          it "builds the document" do
+            expect(address).to have_target
+          end
+
+          it "sets the attributes" do
+            expect(address.target_id).to eq(league.id)
+            expect(address.target_type).to eq(league.class.to_s)
+          end
+
+          it "reloads the document" do
+            expect(address.target(true)).to eq(league)
+          end
+
+          it "binds the inverse" do
+            expect(league.address).to eq(address)
+          end
+        end
       end
 
-      context "when the relation already exists" do
-        let!(:original_league) { division.create_league }
-        let(:new_league) { League.new }
+      context "when inverse is a has_many_records" do
+        let(:player) { Player.create }
 
-        before do
-          division.league = new_league
+        context "when the relation does not exist" do
+          let!(:team) { player.build_team }
+
+          it "builds the document" do
+            expect(player).to have_team
+          end
+
+          it "does not save the document" do
+            expect(team).to_not be_persisted
+          end
+
+          it "binds the inverse" do
+            expect(team.players).to eq([player])
+          end
+
         end
 
-        it "substitutes new document" do
-          expect(division.league).to eq(new_league)
-        end
+        context "when the relation already exists" do
+          let!(:original_team) { player.create_team }
+          let(:new_team) { Team.new }
 
-        it "removes old relation" do
-          expect(division.league_id).to eq(new_league.id)
-        end
-      end
+          before do
+            player.team = new_team
+          end
 
-      context "when the relation is polymorphic" do
-        let(:address) { Address.create }
-        let(:league) { League.create }
+          it "substitutes new document" do
+            expect(player.team).to eq(new_team)
+          end
 
-        before do
-          address.target = league
-        end
-
-        it "builds the document" do
-          expect(address).to have_target
-        end
-
-        it "sets the attributes" do
-          expect(address.target_id).to eq(league.id)
-          expect(address.target_type).to eq(league.class.to_s)
-        end
-
-        it "reloads the document" do
-          expect(address.target(true)).to eq(league)
-        end
-
-        it "binds the inverse" do
-          expect(league.address).to eq(address)
+          it "removes old relation" do
+            expect(player.team_id).to eq(new_team.id)
+          end
         end
       end
 

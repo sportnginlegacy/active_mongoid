@@ -44,6 +44,22 @@ module ActiveMongoid
       self.class.reflect_on_am_association(name.to_s)
     end
 
+    def referenced_many_records?
+      __metadata__ && __metadata__.macro == :has_many_records
+    end
+
+    def referenced_one_record?
+      __metadata__ && __metadata__.macro == :has_one_record
+    end
+
+    def referenced_many_documents?
+      __metadata__ && __metadata__.macro == :has_many_documents
+    end
+
+    def referenced_one_document?
+      __metadata__ && __metadata__.macro == :has_one_document
+    end
+
     module ClassMethods
 
       def reflect_on_am_association(name)

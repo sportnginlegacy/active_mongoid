@@ -62,7 +62,6 @@ module ActiveMongoid
         if inverse_metadata != __metadata__ && !inverse_metadata.nil?
           base.__metadata__ = inverse_metadata
         end
-        true
       end
 
       def bind_from_relational_parent(object)

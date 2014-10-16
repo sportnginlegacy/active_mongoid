@@ -12,7 +12,7 @@ module ActiveMongoid
               _binding do
                 if inverse = __metadata__.inverse(target)
                   if set_base_metadata
-                    if base.referenced_many_documents?
+                    if base.referenced_many_records?
                       target.__send__(inverse).push(base)
                     else
                       target.set_record_relation(inverse, base)
@@ -31,7 +31,7 @@ module ActiveMongoid
               _binding do
                 if inverse
                   set_base_metadata
-                  if base.referenced_many_documents?
+                  if base.referenced_many_records?
                     target.__send__(inverse).delete(base)
                   else
                     target.set_record_relation(inverse, nil)

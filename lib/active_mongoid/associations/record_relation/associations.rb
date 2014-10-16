@@ -26,14 +26,6 @@ module ActiveMongoid
           include RecordRelation::Dependent
         end
 
-        def referenced_many_records?
-          __metadata__ && __metadata__.macro == :has_many_records
-        end
-
-        def referenced_one_record?
-          __metadata__ && __metadata__.macro == :has_one_record
-        end
-
       end
     end
   end

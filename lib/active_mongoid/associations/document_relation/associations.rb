@@ -26,14 +26,6 @@ module ActiveMongoid
           include DocumentRelation::Dependent
         end
 
-        def referenced_many_documents?
-          __metadata__ && __metadata__.macro == :has_many_documents
-        end
-
-        def referenced_one_document?
-          __metadata__ && __metadata__.macro == :has_one_document
-        end
-
       end
     end
   end

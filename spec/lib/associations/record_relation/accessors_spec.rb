@@ -86,57 +86,93 @@ describe ActiveMongoid::Associations::RecordRelation::Accessors do
     end
 
     context "when the relation is a belongs_to" do
-      let(:person) { Person.create }
+      context "when inverse is a has_one_document" do
+        let(:person) { Person.create }
 
-      context "when the relation does not exist" do
-        let!(:player) { person.build_player }
+        context "when the relation does not exist" do
+          let!(:player) { person.build_player }
 
-        it "builds the record" do
-          expect(person).to have_player
-          expect(person.player).to eq(player)
+          it "builds the record" do
+            expect(person).to have_player
+            expect(person.player).to eq(player)
+          end
+        end
+
+        context "when the relation already does exist" do
+          let!(:original_player) { person.create_player }
+          let(:new_player) { Player.new }
+
+          before do
+            person.player = new_player
+          end
+
+          it "substitutes new record" do
+            expect(person.player).to eq(new_player)
+          end
+
+          it "removes old relation" do
+            expect(person.player_id).to be_nil
+          end
+        end
+
+        context "when the relation is polymorphic" do
+          let(:stat) { Stat.create }
+          let(:player) { Player.create }
+
+          before do
+            stat.target = player
+          end
+
+          it "builds the record" do
+            expect(stat).to have_target
+          end
+
+          it "sets the attributes" do
+            expect(stat.target_id).to eq(player.id)
+            expect(stat.target_type).to eq(player.class.to_s)
+          end
+
+          it "reloads the record" do
+            expect(stat.target(true)).to eq(player)
+          end
+
+          it "binds the inverse" do
+            expect(player.stat).to eq(stat)
+          end
         end
       end
 
-      context "when the relation already does exist" do
-        let!(:original_player) { person.create_player }
-        let(:new_player) { Player.new }
+      context "when inverse is a has_many_documents" do
+        let(:team) { Team.create}
 
-        before do
-          person.player = new_player
+        context "when the relation does not exist" do
+          let!(:division) { team.build_division }
+
+          it "builds the record" do
+            expect(team).to have_division
+            expect(team.division).to eq(division)
+          end
+
+          it "does not save the record" do
+            expect(division).to_not be_persisted
+          end
+
+          it "binds the inverse" do
+            expect(division.teams).to eq([team])
+          end
         end
 
-        it "substitutes new record" do
-          expect(person.player).to eq(new_player)
-        end
+        context "when the relation already does exist" do
+          let!(:original_division) { team.create_division }
+          let(:new_division) { Division.new }
 
-        it "removes old relation" do
-          expect(person.player_id).to be_nil
-        end
-      end
+          before do
+            team.division = new_division
+          end
 
-      context "when the relation is polymorphic" do
-        let(:stat) { Stat.create }
-        let(:player) { Player.create }
-
-        before do
-          stat.target = player
-        end
-
-        it "builds the record" do
-          expect(stat).to have_target
-        end
-
-        it "sets the attributes" do
-          expect(stat.target_id).to eq(player.id)
-          expect(stat.target_type).to eq(player.class.to_s)
-        end
-
-        it "reloads the record" do
-          expect(stat.target(true)).to eq(player)
-        end
-
-        it "binds the inverse" do
-          expect(player.stat).to eq(stat)
+          it "substitutes new record" do
+            expect(team.division).to eq(new_division)
+          end
         end
       end
 
