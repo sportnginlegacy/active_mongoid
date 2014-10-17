@@ -1,6 +1,7 @@
 module ActiveMongoid
   module Associations
     class Many < Proxy
+      include ::Mongoid::Threaded::Lifecycle
 
       delegate :avg, :max, :min, :sum, to: :criteria
       delegate :length, :size, to: :target
