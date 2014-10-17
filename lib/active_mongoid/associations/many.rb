@@ -18,7 +18,7 @@ module ActiveMongoid
         return concat(objs) if objs.size > 1
         if objs = objs.first
           append(objs)
-          objs.save if base.persisted? && !_assigning?
+          objs.save if base.persisted? && !_binding?
         end
         self
       end
