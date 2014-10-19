@@ -16,10 +16,6 @@ module ActiveMongoid
         merge!(properties)
       end
 
-      def as
-        self[:as]
-      end
-
       def autosave
         self[:autosave]
       end
@@ -102,7 +98,7 @@ module ActiveMongoid
       end
 
       def inverse_class_name
-        self[:inverse_class_name]
+        self[:as] || self[:inverse_class_name]
       end
 
       def inverses(other = nil)
@@ -123,7 +119,6 @@ module ActiveMongoid
           matches = []
           other.class.am_relations.values.each do |meta|
             if meta.as.to_s == name && meta.class_name == inverse_class_name
-
               matches.push(meta.name)
             end
           end

@@ -47,12 +47,6 @@ module ActiveMongoid
         end
       end
 
-      def bind_polymorphic_type(object, name)
-        if __metadata__.type
-          object.send(__metadata__.type_setter, name)
-        end
-      end
-
       def record_id(base)
         base.send(__metadata__.primary_key)
       end
