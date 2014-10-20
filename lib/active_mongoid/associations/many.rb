@@ -1,6 +1,7 @@
 module ActiveMongoid
   module Associations
     class Many < Proxy
+      include ::Mongoid::Threaded::Lifecycle
 
       delegate :avg, :max, :min, :sum, to: :criteria
       delegate :length, :size, to: :target
@@ -17,7 +18,7 @@ module ActiveMongoid
         return concat(objs) if objs.size > 1
         if objs = objs.first
           append(objs)
-          objs.save if base.persisted?
+          objs.save if base.persisted? && !_binding?
         end
         self
       end
@@ -194,6 +195,14 @@ module ActiveMongoid
           else
             object.save
           end
+        end
+      end
+
+      def with_polymorphic_criterion(criteria, metadata, type = nil)
+        if metadata.polymorphic?
+          criteria.where(metadata.type => type.name)
+        else
+          criteria
         end
       end
 

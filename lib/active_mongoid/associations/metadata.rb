@@ -4,6 +4,14 @@ module ActiveMongoid
 
       delegate :primary_key_default, :foreign_key_default, :stores_foreign_key?, :macro, to: :relation
 
+      def as
+        self[:as]
+      end
+
+      def as?
+        !!as
+      end
+
       def initialize(properties = {})
         merge!(properties)
       end
@@ -38,6 +46,10 @@ module ActiveMongoid
         @foreign_key_setter ||= "#{foreign_key}="
       end
 
+      def type_setter
+        @type_setter ||= "#{type}="
+      end
+
       def determine_key
         relation.stores_foreign_key? ? foreign_key : primary_key
       end
@@ -57,9 +69,13 @@ module ActiveMongoid
       end
 
       def object_class
-        (self[:class_name] || name.to_s.singularize.titleize.delete(' ')).constantize
+        class_name.constantize
       end
       alias_method :klass, :object_class
+
+      def class_name
+        (self[:class_name] || name.to_s.singularize.titleize.delete(' ')).sub(/\A::/,"")
+      end
 
       def name
         self[:name].to_s
@@ -78,7 +94,7 @@ module ActiveMongoid
       end
 
       def inverse_klass
-        @inverse_klass ||= inverse_class_name.constantize
+        @inverse_klass ||= inverse_class_name.constantize if inverse_class_name
       end
 
       def inverse_class_name
@@ -87,10 +103,35 @@ module ActiveMongoid
 
       def inverses(other = nil)
         if self[:polymorphic]
-          # lookup_inverses(other)
+          lookup_inverses(other)
         else
           @inverses ||= determine_inverses
         end
+      end
+
+      def polymorphic?
+        @polymorphic ||= (!!self[:as] || !!self[:polymorphic])
+      end
+
+      def lookup_inverses(other)
+        return [ inverse_of ] if inverse_of
+        if other
+          matches = []
+          other.class.am_relations.values.each do |meta|
+            if meta.as.to_s == name && meta.class_name == inverse_class_name
+              matches.push(meta.name)
+            end
+          end
+          matches
+        end
+      end
+
+      def determine_inverse_for(field)
+        relation.stores_foreign_key? && polymorphic? ? "#{name}_#{field}" : nil
+      end
+
+      def inverse_type
+        @inverse_type ||= determine_inverse_for(:type)
       end
 
       def inverse(other = nil)
@@ -98,13 +139,17 @@ module ActiveMongoid
         invs.first if invs.count == 1
       end
 
-
-      def inverse_setter
-        "#{inverse}="
+      def inverse_of
+        self[:inverse_of]
       end
 
-      def inverse_metadata
-        object_class.am_relations[inverse]
+      def inverse_setter(other = nil)
+        "#{inverse(other)}="
+      end
+
+      def inverse_metadata(object = nil)
+        object = object || object_class
+        object.reflect_on_am_association(inverse(object))
       end
 
       def determine_inverses
@@ -120,7 +165,13 @@ module ActiveMongoid
       def determine_inverse_relation
         default = foreign_key_match || klass.am_relations[inverse_klass.name.underscore]
         return default.name if default
-        # TODO: raise exception
+        klass.am_relations.each_pair do |key, meta|
+          next if meta.name == name
+          if meta.class_name == inverse_class_name
+            return key.to_sym
+          end
+        end
+        return nil
       end
 
       def foreign_key_match
@@ -143,6 +194,29 @@ module ActiveMongoid
         @destructive ||= (dependent == :delete || dependent == :destroy)
       end
 
+      def polymorphic?
+        @polymorphic ||= (!!self[:as] || !!self[:polymorphic])
+      end
+
+      def type
+        @type ||= polymorphic? ? "#{as}_type" : nil
+      end
+
+      def type_setter
+        @type_setter ||= "#{type}="
+      end
+
+      def determine_inverse_for(field)
+        relation.stores_foreign_key? && polymorphic? ? "#{name}_#{field}" : nil
+      end
+
+      def inverse_type
+        @inverse_type ||= determine_inverse_for(:type)
+      end
+
+      def inverse_type_setter
+        @inverse_type_setter ||= "#{inverse_type}="
+      end
 
     end
   end

@@ -5,8 +5,8 @@ module ActiveMongoid
 
         def build(type = nil)
           return object unless query?
-          model = type ? type.constantize : __metadata__.klass
-          __metadata__.criteria(object, model)
+          return [] if object.is_a?(Array)
+          __metadata__.criteria(object, base.class)
         end
 
       end

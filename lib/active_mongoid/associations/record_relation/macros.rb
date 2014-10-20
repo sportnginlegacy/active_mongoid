@@ -34,6 +34,10 @@ module ActiveMongoid
                 type: Integer,
                 default: metadata.foreign_key_default
               )
+              if metadata.polymorphic?
+                self.polymorphic = true
+                field(metadata.inverse_type, type: String)
+              end
             end
           end
 

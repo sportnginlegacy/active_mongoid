@@ -5,4 +5,5 @@ class Person
   field :name
 
   belongs_to_record :player
+  has_many_records :addresses, as: :target
 end
