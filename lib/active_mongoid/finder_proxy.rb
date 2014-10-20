@@ -5,9 +5,12 @@ module ActiveMongoid
     end
 
     attr_accessor :__target
+    attr_accessor :__target_class
+
 
     def initialize(target)
       @__target = target
+      @__target_class = target.respond_to?(:klass) ? target.klass : target
     end
 
     def find(*args)
@@ -22,7 +25,7 @@ module ActiveMongoid
     end
 
     def where(opts = :chain, *rest)
-      if opts && opts.respond_to?(:select)
+      if opts && opts.is_a?(Hash)
         bson_opts = opts.select{|k,v| v.is_a?(BSON::ObjectId)}
 
         if bson_opts[:id]
@@ -39,20 +42,13 @@ module ActiveMongoid
       FinderProxy.new(__target.send(:where, opts, *rest))
     end
 
-    def includes(*args)
-      FinderProxy.new(__target.send(:includes, *args))
-    end
-
-    def scoped(options = nil)
-      FinderProxy.new(__target.send(:scoped, options))
-    end
-
-    def merge(options = nil)
-      FinderProxy.new(__target.send(:merge, options))
-    end
-
     def method_missing(name, *args, &block)
-      __target.send(name, *args, &block)
+      resp = __target.send(name, *args, &block)
+      if resp == __target_class || (resp.is_a?(ActiveRecord::Relation) && resp.klass == __target_class)
+        FinderProxy.new(resp)
+      else
+        resp
+      end
     end
 
   end

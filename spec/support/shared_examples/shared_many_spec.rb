@@ -333,6 +333,19 @@ shared_examples "a has_many relation" do
 
   end
 
+  context ".remove_not_in" do
+
+    before do
+      persisted_relation << targets
+    end
+
+    it "removes all except for the specified target" do
+      persisted_relation.send(:remove_not_in, [target_1.id])
+      expect(persisted_relation).to eq([target_1])
+    end
+
+  end
+
   context ".find" do
 
     before do

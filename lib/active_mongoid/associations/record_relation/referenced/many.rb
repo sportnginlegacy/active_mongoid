@@ -66,7 +66,7 @@ module ActiveMongoid
                 unbind_one(obj)
                 target.delete(obj)
                 if __metadata__.destructive?
-                  obj.destroyed = true
+                  obj.mark_for_destruction
                 end
               end
             end
