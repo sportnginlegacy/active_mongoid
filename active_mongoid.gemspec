@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Bryce Schmidt"]
   spec.email         = ["bryce.schmidt@sportngin.com"]
   spec.summary       = %q{ActiveMongoid provides a relational interface between ActiveRecord and Mongoid objects.}
-  spec.description   = %q{ActiveMongoid faciliates usage of both ActiveRecord and Mongoid in a single app by providing a inteface for inter-ORM relations.}
+  spec.description   = %q{ActiveMongoid facilitates usage of both ActiveRecord and Mongoid in a single app by providing an inteface for inter-ORM relations.}
   spec.homepage      = ""
   spec.license       = "MIT"
 

@@ -2,7 +2,7 @@
 [![Build Status][build_status_image]][build_status]
 [![Coverage Status][coverage_status_image]][coverage_status]
 
-TODO: Write a gem description
+ActiveMongoid facilitates usage of both ActiveRecord and Mongoid in a single app by providing an inteface for inter-ORM relations. It was written to replace select Mongoid models with ActiveRecord versions so it tries to adhere the Mongoid API as closely as possible. Much of the logic and structure of this lib are either directly inspired or straight up ripped off the Mongoid source.
 
 ## Installation
 
@@ -20,7 +20,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+
 
 ## Contributing
 
