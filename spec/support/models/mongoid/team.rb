@@ -4,6 +4,6 @@ class Team
 
   field :name
 
-  has_many_records :players
+  has_many_records :players, order: 'name asc'
   belongs_to_record :division
 end

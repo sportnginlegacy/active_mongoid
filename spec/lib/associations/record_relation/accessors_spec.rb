@@ -267,6 +267,26 @@ describe ActiveMongoid::Associations::RecordRelation::Accessors do
       end
     end
 
+    context "when the relation is a has_many_records" do
+      let(:team) { Team.create }
+
+      context "when relation exists" do
+        before do
+          Player.create(name: 'b', team_id: team.id)
+          Player.create(name: 'a', team_id: team.id)
+        end
+
+        it "finds the records" do
+          expect(team).to have_players
+        end
+
+        it "finds the records in order" do
+          expect(team.players.first.name).to eq('a')
+          expect(team.players.last.name).to eq('b')
+        end
+      end
+    end
+
     context "when the relation is a belongs_to" do
       let(:player) do
         Player.create
