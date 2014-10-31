@@ -28,9 +28,15 @@ module ActiveMongoid
         relation.builder(base, self, object)
       end
 
+      def order
+        self[:order]
+      end
+
       def criteria(object, type = nil)
         query = relation.criteria(self, object, type)
-        # order ? query.order_by(order) : query
+        if order
+          query = query.respond_to?(:order_by) ? query.order_by(order) : query.order(order)
+        end
         query
       end
 

@@ -294,10 +294,18 @@ describe ActiveMongoid::Associations::DocumentRelation::Accessors do
       let(:division) { Division.create }
 
       context "when relation exists" do
-        before { Team.create(division: division.id) }
+        before do
+          Team.create(name: 'b', division_id: division.id)
+          Team.create(name: 'a', division_id: division.id)
+        end
 
-        it "finds the document" do
+        it "finds the records" do
           expect(division).to have_teams
+        end
+
+        it "finds the records in order" do
+          expect(division.teams.first.name).to eq('a')
+          expect(division.teams.last.name).to eq('b')
         end
       end
 

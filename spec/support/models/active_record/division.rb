@@ -3,7 +3,7 @@ class Division < ActiveRecord::Base
   include ActiveMongoid::Finders
   include ActiveMongoid::BsonId
 
-  has_many_documents :teams
+  has_many_documents :teams, order: [:name, :asc]
   belongs_to_document :league
   belongs_to_document :post, foreign_key: :pid
   has_many_documents :stats, as: :target
