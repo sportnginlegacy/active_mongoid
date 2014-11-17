@@ -107,7 +107,7 @@ All relations accept the following options:
 * ```team.players.delete(player)``` Removes object and calls dependent method on object
 * ```team.players.delete_all()``` Calls delete on all objects
 * ```team.players.destroy_all()``` Calls destroy on all objects
-* ```team.players.each``` Iterate on onjects
+* ```team.players.each``` Iterates on on objects
 * ```team.players.exists?``` Calls exists? on relation
 * ```team.players.find(params)``` Return relation with criteria added
 * ```team.players.nullify``` Clears loaded relation 
