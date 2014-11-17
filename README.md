@@ -18,7 +18,7 @@ Or install it yourself as:
 
     $ gem install active_mongoid
 
-## Usage
+## Usage by Example
 
 ### ActiveMongoid::Associations
 
@@ -72,6 +72,63 @@ end
 ```
 
 
+## API Documentation
+
+### ActiveMongoid::Associations
+
+#### Record Relation Class Methods
+* ```has_many_records :players``` 
+* ```has_man_record :player``` 
+* ```belongs_to_record :player``` 
+  
+#### Document Relation Class Methods
+* ```has_many_documents :stats``` 
+* ```has_one_record :stat``` 
+* ```belongs_to_record :stat``` 
+
+#### Options
+All relations accept the following options:
+  - ```order`` Needs to be formated according to ActiveRecord spec
+  - ```dependent``` Accepts: `:destroy, :delete`
+  - ```as``` Polymorphic relation
+  - ```foreign_key``` Foreign key for relation
+  - ```primary_key``` Primary key for relation
+  - ```class_name``` Relation class name
+  - ```autosave``` Accepts `:true`
+
+#### Record/Document Relation Has Many Instance Methods
+* ```team.players``` Returns the relation
+* ```team.players(true)``` Forces reload from database and returns relation
+* ```team.players = [player]``` Assigns objects and calls dependent method on old values
+* ```team.players << player``` Appends object and will save if base is persisted
+* ```team.players.build({player.attributes})``` Builds and binds object from attributes and binds relation
+* ```team.players.concat([player_1, player_2]``` Appends and binds array of objects. Will save if base is persisted
+* ```team.players.purge``` Removes all objects from relation and calls dependent method on objects
+* ```team.players.delete(player)``` Removes object and calls dependent method on object
+* ```team.players.delete_all()``` Calls delete on all objects
+* ```team.players.destroy_all()``` Calls destroy on all objects
+* ```team.players.each``` Iterate on onjects
+* ```team.players.exists?``` Calls exists? on relation
+* ```team.players.find(params)``` Return relation with criteria added
+* ```team.players.nullify``` Clears loaded relation 
+* ```team.players.blank?``` Returns `true` if empty
+* ```team.players.create({player.attributes})``` Creates and binds from attributes
+* ```team.players.create!({player.attributes})``` Creates and binds form attributes and raises an exception if fails
+* ```team.players.find_or_create_by({player.attributes})``` Finds or creates a record from attributes
+* ```team.players.find_or_initialize_by({player.attributes})``` Finds or initializes a record from attributes
+* ```team.players.nil?``` returns `false`
+
+All other methods will defer to the ActiveRecord/Mongoid relation respectively.
+
+#### Record/Document Relation Has One and Belongs To Instance Methods
+* ```player.stat``` Returns the relation
+* ```player.stat(true)``` Forces reload from database and returns relation
+* ```player.stat = stat``` Assigns object as relation. Will substitute old value and call dependent method
+* ```player.build_stat({})``` Builds and binds new object from attributes 
+* ```player.create_stat({})``` Creates and binds new object from attributes
+
+All other methods called on relation will defer to the object.
+
 ### ActiveMongoid::BsonId
 
 ```ruby
@@ -106,6 +163,8 @@ end
 > Division.find(BSON::ObjectId('545289a7b736b6586a000001')
 => #<Tournament id: 1, _id: "545289a7b736b6586a000001", name: "new tournament">
 > Division.where(_id: BSON::ObjectId('545289a7b736b6586a000001')
+=> [#<Tournament id: 1, _id: "545289a7b736b6586a000001", name: "new tournament">]
+> Division.where(id: BSON::ObjectId('545289a7b736b6586a000001')
 => [#<Tournament id: 1, _id: "545289a7b736b6586a000001", name: "new tournament">]
 ```
 
