@@ -109,7 +109,7 @@ All relations accept the following options:
 * ```team.players.destroy_all()``` Calls destroy on all objects
 * ```team.players.each``` Iterates on on objects
 * ```team.players.exists?``` Calls exists? on relation
-* ```team.players.find(params)``` Return relation with criteria added
+* ```team.players.find(params)``` Returns relation with criteria added
 * ```team.players.nullify``` Clears loaded relation 
 * ```team.players.blank?``` Returns `true` if empty
 * ```team.players.create({player.attributes})``` Creates and binds from attributes
