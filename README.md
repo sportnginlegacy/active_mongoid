@@ -59,8 +59,10 @@ end
 => true
 > team.players
 => [#<Player id: 1, name: "foo", team_id: "5453d55cb736b692ab000001">, #<Player id: 2, name: "foo1", team_id: "5453d55cb736b692ab000001">] 
-> team.players.where(name: "foo")
-=> [#<Player id: 1, name: "foo", team_id: "5453d55cb736b692ab000001">] 
+> team.players.where(name: "foo") # returns relation so chaining is possible
+=> [#<Player id: 1, name: "foo", team_id: "5453d55cb736b692ab000001">]
+> team.players.where(name: "foo").where(id: 1)
+=> [#<Player id: 1, name: "foo", team_id: "5453d55cb736b692ab000001">]  
 > player = Player.create(name: "baz")
 => #<Player id: 3, name: "baz", team_id: nil>
 > team = player.build_team(name: "bar")  # create_ will call save
@@ -105,8 +107,8 @@ All relations accept the following options:
 * ```team.players.concat([player_1, player_2]``` Appends and binds array of objects. Will save if base is persisted
 * ```team.players.purge``` Removes all objects from relation and calls dependent method on objects
 * ```team.players.delete(player)``` Removes object and calls dependent method on object
-* ```team.players.delete_all()``` Calls delete on all objects
-* ```team.players.destroy_all()``` Calls destroy on all objects
+* ```team.players.delete_all(optional_criteria)``` Calls delete on all objects
+* ```team.players.destroy_all(optional_criteria)``` Calls destroy on all objects
 * ```team.players.each``` Iterates on on objects
 * ```team.players.exists?``` Calls exists? on relation
 * ```team.players.find(params)``` Returns relation with criteria added
