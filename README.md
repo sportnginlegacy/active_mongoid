@@ -88,7 +88,7 @@ end
 
 #### Options
 All relations accept the following options:
-  - ```order`` Needs to be formated according to ActiveRecord spec
+  - ```order``` Needs to be formated according to ActiveRecord spec
   - ```dependent``` Accepts: `:destroy, :delete`
   - ```as``` Polymorphic relation
   - ```foreign_key``` Foreign key for relation
