@@ -78,7 +78,7 @@ end
 
 ### ActiveMongoid::Associations
 
-#### Record/Document Relation HasMany Instance Methods
+#### Record/Document Association HasMany Class Methods
 * ```has_many_records :players``` 
 * ```has_many_documents :stats``` 
 
@@ -88,13 +88,13 @@ Options:
   - ```as``` Polymorphic relation
   - ```foreign_key``` Foreign key for relation
   - ```primary_key``` Primary key for relation
-  - ```class_name``` Relation class name
+  - ```class_name``` Association class name
   - ```autosave``` Accepts `:true`
 
 * ```has_man_record :player``` 
 * ```belongs_to_record :player``` 
   
-#### Record/Document Relation HasOne and BelongsTo Instance Methods
+#### Record/Document Association HasOne and BelongsTo Class Methods
 * ```has_one_record :player``` 
 * ```belongs_to_record :player```
 * ```has_one_record :stat``` 
@@ -105,10 +105,10 @@ Options:
   - ```as``` Polymorphic relation
   - ```foreign_key``` Foreign key for relation
   - ```primary_key``` Primary key for relation
-  - ```class_name``` Relation class name
+  - ```class_name``` Association class name
   - ```autosave``` Accepts `:true`
 
-#### Record/Document Relation HasMany Instance Methods
+#### Record/Document Association HasMany Instance Methods
 * ```team.players``` Returns the relation
 * ```team.players(true)``` Forces reload from database and returns relation
 * ```team.players = [player]``` Assigns objects and calls dependent method on old values
@@ -132,7 +132,7 @@ Options:
 
 All other methods will defer to the ActiveRecord/Mongoid relation respectively.
 
-#### Record/Document Relation HasOne and BelongsTo Instance Methods
+#### Record/Document Association HasOne and BelongsTo Instance Methods
 * ```player.stat``` Returns the relation
 * ```player.stat(true)``` Forces reload from database and returns relation
 * ```player.stat = stat``` Assigns object as relation. Will substitute old value and call dependent method
