@@ -90,9 +90,6 @@ Options:
   - ```primary_key``` Primary key for relation
   - ```class_name``` Association class name
   - ```autosave``` Accepts `:true`
-
-* ```has_man_record :player``` 
-* ```belongs_to_record :player``` 
   
 #### Record/Document Association HasOne and BelongsTo Class Methods
 * ```has_one_record :player``` 
