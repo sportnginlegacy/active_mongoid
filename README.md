@@ -2,7 +2,7 @@
 [![Build Status][build_status_image]][build_status]
 [![Coverage Status][coverage_status_image]][coverage_status]
 
-ActiveMongoid facilitates usage of both ActiveRecord and Mongoid in a single rails application by providing an inteface for inter-ORM relations. It was written to replace select Mongoid models with ActiveRecord versions, so it tries to adhere to the Mongoid API as closely as possible. To accomplish this compatibility, much of the logic and structure of this lib are either directly inspired or straight up ripped off the Mongoid source.
+ActiveMongoid facilitates usage of both ActiveRecord and Mongoid in a single rails application by providing an interface for inter-ORM relations. It was written to replace select Mongoid models with ActiveRecord versions, so it tries to adhere to the Mongoid API as closely as possible. To accomplish this compatibility, much of the logic and structure of this lib are either directly inspired or straight up ripped off the Mongoid source.
 
 ## Installation
 
