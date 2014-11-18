@@ -78,18 +78,11 @@ end
 
 ### ActiveMongoid::Associations
 
-#### Record Relation Class Methods
+#### Record/Document Relation HasMany Instance Methods
 * ```has_many_records :players``` 
-* ```has_man_record :player``` 
-* ```belongs_to_record :player``` 
-  
-#### Document Relation Class Methods
 * ```has_many_documents :stats``` 
-* ```has_one_record :stat``` 
-* ```belongs_to_record :stat``` 
 
-#### Options
-All relations accept the following options:
+Options:
   - ```order``` Needs to be formated according to ActiveRecord/Mongoid spec respectively
   - ```dependent``` Accepts: `:destroy, :delete`
   - ```as``` Polymorphic relation
@@ -98,7 +91,24 @@ All relations accept the following options:
   - ```class_name``` Relation class name
   - ```autosave``` Accepts `:true`
 
-#### Record/Document Relation Has Many Instance Methods
+* ```has_man_record :player``` 
+* ```belongs_to_record :player``` 
+  
+#### Record/Document Relation HasOne and BelongsTo Instance Methods
+* ```has_one_record :player``` 
+* ```belongs_to_record :player```
+* ```has_one_record :stat``` 
+* ```belongs_to_record :stat``` 
+
+Options:
+  - ```dependent``` Accepts: `:destroy, :delete`
+  - ```as``` Polymorphic relation
+  - ```foreign_key``` Foreign key for relation
+  - ```primary_key``` Primary key for relation
+  - ```class_name``` Relation class name
+  - ```autosave``` Accepts `:true`
+
+#### Record/Document Relation HasMany Instance Methods
 * ```team.players``` Returns the relation
 * ```team.players(true)``` Forces reload from database and returns relation
 * ```team.players = [player]``` Assigns objects and calls dependent method on old values
@@ -122,7 +132,7 @@ All relations accept the following options:
 
 All other methods will defer to the ActiveRecord/Mongoid relation respectively.
 
-#### Record/Document Relation Has One and Belongs To Instance Methods
+#### Record/Document Relation HasOne and BelongsTo Instance Methods
 * ```player.stat``` Returns the relation
 * ```player.stat(true)``` Forces reload from database and returns relation
 * ```player.stat = stat``` Assigns object as relation. Will substitute old value and call dependent method
