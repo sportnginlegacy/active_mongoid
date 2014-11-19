@@ -5,4 +5,7 @@ rvm:
   - 2.1.0
 services:
   - mongodb
-script: bundle exec rspec
+script: bundle exec appraisal rspec
+gemfile:
+  - gemfiles/mongoid_2.8.0.gemfile
+  - gemfiles/mongoid_3.1.0.gemfile
