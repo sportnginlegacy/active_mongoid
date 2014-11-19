@@ -2,7 +2,7 @@
 [![Build Status][build_status_image]][build_status]
 [![Coverage Status][coverage_status_image]][coverage_status]
 
-ActiveMongoid facilitates usage of both ActiveRecord and Mongoid in a single rails application by providing an interface for inter-ORM relations. It was written to replace select Mongoid models with ActiveRecord versions, so it tries to adhere to the Mongoid API as closely as possible. To accomplish this compatibility, much of the logic and structure of this lib are either directly inspired or straight up ripped off the Mongoid source.
+ActiveMongoid facilitates usage of both ActiveRecord and Mongoid in a single rails application by providing an ActiveRecord-like interface for inter-ORM relations. It was written to replace select Mongoid models with ActiveRecord versions so it tries to adhere to the Mongoid API as closely as possible. To accomplish this compatibility, much of the logic and structure of this lib are either directly inspired or straight up ripped off the Mongoid source.
 
 ## Installation
 
@@ -22,8 +22,9 @@ Or install it yourself as:
 
 ### ActiveMongoid::Associations
 
-#### ActiveRecord
+To add ActiveMongoid associations, simply add the `ActiveMongoid::Associations` module in both models and define the relations using the provided macros as you would with either ActiveRecord or Mongoid.
 
+#### ActiveRecord
 ```ruby
 class Player < ActiveRecord::Base
   include ActiveMongoid::Associations
@@ -44,6 +45,7 @@ class Team
 end
 ```
 
+Then you can interact with the models and relations just as you would with either ActiveRecord or Mongoid.
 ```ruby
 > team = Team.create
 => #<Team _id: 5453d55cb736b692ab000001, name: nil>
@@ -72,7 +74,6 @@ end
 > player.team(true) # forces reload from database
 => nil 
 ```
-
 
 ## API Documentation
 
@@ -140,6 +141,8 @@ All other methods called on relation will defer to the object.
 
 ### ActiveMongoid::BsonId
 
+The BsonId module faciliates the useage of `BSON::ObjectId`'s on ActiveRecord objects. This module is especially helpful if you are migrating a model from a Mongoid object to an ActiveRecord object and want to carry over the old id.
+
 ```ruby
 class Division < ActiveRecord::Base
   include ActiveMongoid::BsonId
@@ -157,6 +160,8 @@ end
 ```
 
 ### ActiveMongoid::Finders
+
+This module proxies the existing ActiveRecord `find` and `where` to perform casting of `BSON::ObjectId`'s to string for queries. Additionally it'll default to the `_id` field if the object is a valid `BSON::ObjectId` and the `_id` field is present on the model. 
 
 ```ruby
 class Division < ActiveRecord::Base
