@@ -319,14 +319,14 @@ shared_examples "a has_many relation" do
 
     it "deletes all targets" do
       id = persisted_base.id
-      id = id.is_a?(BSON::ObjectId) ? id.to_s : id
+      id = id.is_a?(::ActiveMongoid::BSON::ObjectId) ? id.to_s : id
       expect(target_class).to receive(:delete_all).once
       persisted_relation.delete_all
     end
 
     it "destroys all targets" do
       id = persisted_base.id
-      id = id.is_a?(BSON::ObjectId) ? id.to_s : id
+      id = id.is_a?(::ActiveMongoid::BSON::ObjectId) ? id.to_s : id
       expect(target_class).to receive(:destroy_all).once.with({metadata.foreign_key.to_s => id})
       persisted_relation.destroy_all
     end

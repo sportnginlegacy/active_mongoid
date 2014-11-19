@@ -6,7 +6,7 @@ module ActiveMongoid
 
       def find(*args)
         key = args.flatten.first
-        if !key.is_a?(Fixnum) && (key.is_a?(BSON::ObjectId) || BSON::ObjectId.legal?(key))
+        if !key.is_a?(Fixnum) && (key.is_a?(::ActiveMongoid::BSON::ObjectId) || ::ActiveMongoid::BSON::ObjectId.legal?(key))
           where({_id: key.to_s}).first.tap do |obj|
             raise ActiveRecord::RecordNotFound unless obj
           end
@@ -17,7 +17,7 @@ module ActiveMongoid
 
       def where(opts = :chain, *rest)
         if opts && opts.respond_to?(:select)
-          bson_opts = opts.select{|k,v| v.is_a?(BSON::ObjectId)}
+          bson_opts = opts.select{|k,v| v.is_a?(::ActiveMongoid::BSON::ObjectId)}
 
           if bson_opts[:id]
             opts.delete(:id)

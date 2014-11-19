@@ -21,7 +21,7 @@ describe ActiveMongoid::Finders do
       end
 
       it "raises NotFound exception when request with bson id" do
-        expect{klass.find(BSON::ObjectId.new)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect{klass.find(::ActiveMongoid::BSON::ObjectId.new)}.to raise_error(ActiveRecord::RecordNotFound)
       end
 
     end
@@ -43,7 +43,7 @@ describe ActiveMongoid::Finders do
       end
 
       it "raises NotFound exception when request with bson id" do
-        expect{scoped_klass.find(BSON::ObjectId.new)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect{scoped_klass.find(::ActiveMongoid::BSON::ObjectId.new)}.to raise_error(ActiveRecord::RecordNotFound)
       end
 
     end
@@ -52,7 +52,7 @@ describe ActiveMongoid::Finders do
 
   describe ".where" do
 
-    let(:bson_id) { BSON::ObjectId.new }
+    let(:bson_id) { ::ActiveMongoid::BSON::ObjectId.new }
 
     before do
       division.update_attributes(sport_id: bson_id)

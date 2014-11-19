@@ -25,7 +25,7 @@ module ActiveMongoid
         self.instance_eval do
           define_method(name) do
             attribute = read_attribute(name)
-            attribute.nil? ? nil : BSON::ObjectId.from_string(attribute)
+            attribute.nil? ? nil : ::ActiveMongoid::BSON::ObjectId.from_string(attribute)
           end
         end
       end
@@ -33,7 +33,7 @@ module ActiveMongoid
       def bson_attr_init(name)
         init_method = :"init_attr_for_#{name}"
         define_method(init_method) do
-          self.send("#{name}=", BSON::ObjectId.new) unless read_attribute(name)
+          self.send("#{name}=", ::ActiveMongoid::BSON::ObjectId.new) unless read_attribute(name)
         end
         after_initialize init_method
       end
