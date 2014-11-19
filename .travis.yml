@@ -6,3 +6,6 @@ rvm:
 services:
   - mongodb
 script: bundle exec rspec
+gemfile:
+  - gemfiles/mongoid_2.8.gemfile
+  - gemfiles/mongoid_3.1.gemfile

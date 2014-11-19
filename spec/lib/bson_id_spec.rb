@@ -19,14 +19,14 @@ describe ActiveMongoid::BsonId do
     end
 
     it "returns valid bson_id" do
-      expect(BSON::ObjectId.legal?(division._id))
+      expect(::ActiveMongoid::BSON::ObjectId.legal?(division._id))
     end
 
   end
 
   describe "bson attr setter" do
 
-    let(:bson_id) { BSON::ObjectId.new }
+    let(:bson_id) { ::ActiveMongoid::BSON::ObjectId.new }
 
     before do
       division.sport_id = bson_id
