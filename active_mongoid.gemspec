@@ -18,19 +18,19 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "activesupport"
-  spec.add_dependency "activerecord"
-  spec.add_dependency "mongo"
-  spec.add_dependency "bson_ext"
-  spec.add_dependency "mongoid"
-  spec.add_dependency "after_do"
+  spec.add_dependency "activesupport", "> 3.2.0"
+  spec.add_dependency "activerecord", "> 3.2.0"
+  spec.add_dependency "mongo", "> 1.5.0"
+  spec.add_dependency "bson_ext", "> 1.11.0"
+  spec.add_dependency "mongoid", "> 2.8.0"
+  spec.add_dependency "after_do", "~> 0.3.0"
 
-  spec.add_development_dependency "rspec"
-  spec.add_development_dependency "sqlite3"
-  spec.add_development_dependency "database_cleaner"
-  spec.add_development_dependency "pry"
-  spec.add_development_dependency "simplecov"
-  spec.add_development_dependency "simplecov-gem-adapter"
-  spec.add_development_dependency "coveralls"
-  spec.add_development_dependency "appraisal"
+  spec.add_development_dependency "rspec", "~> 3.1.0"
+  spec.add_development_dependency "sqlite3", "~> 1.3.10"
+  spec.add_development_dependency "database_cleaner", "~> 1.3.0"
+  spec.add_development_dependency "pry", "~> 0.10.1"
+  spec.add_development_dependency "simplecov", "~> 0.8.0"
+  spec.add_development_dependency "simplecov-gem-adapter", "~> 1.0.0"
+  spec.add_development_dependency "coveralls", "~> 0.7.0"
+  spec.add_development_dependency "appraisal", "~> 1.0.0"
 end
