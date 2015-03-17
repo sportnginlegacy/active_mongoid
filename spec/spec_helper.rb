@@ -26,13 +26,20 @@ require 'pry'
 require 'rspec'
 
 Mongoid.configure do |config|
-  if Mongoid::VERSION >= "3"
-    config.connect_to('active_mongoid_test')
+  version = ::Gem::Version.new(Mongoid::VERSION)
+  if version >= ::Gem::Version.new("3.0.0")
+    config.sessions = {
+      default: {
+        database: 'active_mongoid_test',
+        hosts: [ (ENV['MONGO_HOST'] || 'localhost')+':27017' ],
+        options: { read: :primary }
+      }
+    }
   else
     config.master = Mongo::Connection.new.db('active_mongoid_test')
     config.allow_dynamic_fields = false
   end
-  config.identity_map_enabled = false
+  config.identity_map_enabled = false if config.respond_to?(:identity_map_enabled)
 end
 
 RSpec.configure do |config|
