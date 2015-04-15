@@ -91,6 +91,12 @@ ActiveRecord::Schema.define do
     t.string :target_id
     t.string :target_type
   end
+
+  create_table :plays, :force => true, :id => false do |t|
+    t.string :id
+    t.string :name
+    t.string :sport_id
+  end
 end
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }

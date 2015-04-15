@@ -159,6 +159,25 @@ end
 => BSON::ObjectId('545289a7b736b6586a000002')
 ```
 
+```ruby
+class Play < ActiveRecord::Base
+  include ActiveMongoid::Associations
+  include ActiveMongoid::Finders
+  include ActiveMongoid::BsonId
+
+  bsonify_attr :id, initialize: true, primary: true
+end
+```
+
+```ruby
+> play.id
+=> '545289a7b736b6586a000001' # An issue with ActiveRecord does not allow casting this particular accessor
+> play.id = BSON::ObjectId('545289a7b736b6586a000002')
+=> BSON::ObjectId('545289a7b736b6586a000002')
+> play._id = '545289a7b736b6586a000002'
+=> BSON::ObjectId('545289a7b736b6586a000002')
+```
+
 ### ActiveMongoid::Finders
 
 This module proxies the existing ActiveRecord `find` and `where` to perform casting of `BSON::ObjectId`'s to string for queries. Additionally it'll default to the `_id` field if the object is a valid `BSON::ObjectId` and the `_id` field is present on the model. 
@@ -173,16 +192,14 @@ end
 
 ```ruby
 > Division.find(1)
-=> #<Tournament id: 1, _id: "545289a7b736b6586a000001", name: "new tournament">
+=> #<Division id: 1, _id: "545289a7b736b6586a000001", name: "new">
 > Division.find(BSON::ObjectId('545289a7b736b6586a000001')
-=> #<Tournament id: 1, _id: "545289a7b736b6586a000001", name: "new tournament">
+=> #<Division id: 1, _id: "545289a7b736b6586a000001", name: "new">
 > Division.where(_id: BSON::ObjectId('545289a7b736b6586a000001')
-=> [#<Tournament id: 1, _id: "545289a7b736b6586a000001", name: "new tournament">]
+=> [#<Division id: 1, _id: "545289a7b736b6586a000001", name: "new">]
 > Division.where(id: BSON::ObjectId('545289a7b736b6586a000001')
-=> [#<Tournament id: 1, _id: "545289a7b736b6586a000001", name: "new tournament">]
+=> [#<Division id: 1, _id: "545289a7b736b6586a000001", name: "new">]
 ```
-
-
 
 ## Contributing
 
