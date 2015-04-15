@@ -3,9 +3,11 @@ rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.0
+  - 2.2.0
 services:
   - mongodb
 script: bundle exec rspec
 gemfile:
   - gemfiles/mongoid_2.8.gemfile
   - gemfiles/mongoid_3.1.gemfile
+  - gemfiles/mongoid_4.0.gemfile
