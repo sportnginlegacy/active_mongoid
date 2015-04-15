@@ -16,7 +16,7 @@ module ActiveMongoid
     def find(*args)
       key = args.flatten.first
       if !key.is_a?(Fixnum) && (key.is_a?(::ActiveMongoid::BSON::ObjectId) || ::ActiveMongoid::BSON::ObjectId.legal?(key))
-        where({ar_primary_key => key.to_s}).first.tap do |obj|
+        where({__am_primary_key => key.to_s}).first.tap do |obj|
           raise ActiveRecord::RecordNotFound unless obj
         end
       else
@@ -28,10 +28,10 @@ module ActiveMongoid
       if opts && opts.is_a?(Hash)
         bson_opts = opts.select{|k,v| v.is_a?(::ActiveMongoid::BSON::ObjectId)}
 
-        if bson_opts[:id] && ar_primary_key != :id
+        if bson_opts[:id] && __am_primary_key != :id
           opts.delete(:id)
           bson_opts[:_id] = bson_opts.delete(:id)
-        elsif bson_opts[:_id] && ar_primary_key == :id
+        elsif bson_opts[:_id] && __am_primary_key == :id
           opts.delete(:_id)
           bson_opts[:id] = bson_opts.delete(:_id)
         end
@@ -54,9 +54,9 @@ module ActiveMongoid
       end
     end
 
-    def ar_primary_key
-      if __target_class.respond_to?(:ar_primary_key) && __target_class.ar_primary_key
-        __target_class.ar_primary_key
+    def __am_primary_key
+      if __target_class.respond_to?(:__am_primary_key) && __target_class.__am_primary_key
+        __target_class.__am_primary_key
       else
         :_id
       end
