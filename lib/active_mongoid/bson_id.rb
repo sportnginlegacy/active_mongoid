@@ -30,7 +30,7 @@ module ActiveMongoid
         self.instance_eval do
           define_method("#{name}=") do |object|
             attribute = object.nil? ? nil : object.to_s
-            self.send(:write_attribute, name, attribute)
+            write_attribute(name, attribute)
           end
         end
       end
