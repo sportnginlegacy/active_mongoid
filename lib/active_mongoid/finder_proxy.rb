@@ -16,7 +16,7 @@ module ActiveMongoid
     def find(*args)
       key = args.flatten.first
       if !key.is_a?(Fixnum) && (key.is_a?(::ActiveMongoid::BSON::ObjectId) || ::ActiveMongoid::BSON::ObjectId.legal?(key))
-        where({__target_class.ar_primary_key => key.to_s}).first.tap do |obj|
+        where({ar_primary_key => key.to_s}).first.tap do |obj|
           raise ActiveRecord::RecordNotFound unless obj
         end
       else
