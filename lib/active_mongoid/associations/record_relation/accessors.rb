@@ -73,6 +73,22 @@ module ActiveMongoid
             end
           end
 
+          def record_ids_getter(name, metadata)
+            ids_method = "#{name.to_s.singularize}_ids"
+            define_method(ids_method) do
+              send(name).only(:id).map(&:id)
+            end
+            self
+          end
+
+          def record_ids_setter(name, metadata)
+            ids_method = "#{name.to_s.singularize}_ids="
+            define_method(ids_method) do |ids|
+              send(metadata.setter, metadata.klass.find(ids.reject(&:blank?)))
+            end
+            self
+          end
+
         end
       end
     end

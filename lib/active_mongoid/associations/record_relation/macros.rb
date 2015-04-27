@@ -20,8 +20,14 @@ module ActiveMongoid
           def has_many_records(name, options = {})
             meta = characterize_association(name, Referenced::Many, options)
             relate_record(name, meta)
-            # document_ids_setter(name, metadata)
-            # document_ids_getter(name, metadata)
+            # record_ids_setter(name, metadata)
+            # record_ids_getter(name, metadata)
+          end
+
+          def has_and_belongs_to_many_records(name, options = {})
+            meta = characterize_association(name, Referenced::ManyToMany, options)
+            reference_record(meta)
+            relate_record(name, meta)
           end
 
           private

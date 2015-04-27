@@ -23,6 +23,11 @@ module ActiveMongoid
             # document_ids_getter(name, metadata)
           end
 
+          def has_and_belongs_to_many_documents(name, options = {})
+            meta = characterize_association(name, Referenced::ManyToMany, options)
+            relate_document(name, meta)
+          end
+
           private
 
           def relate_one_to_one_document(name, metadata)

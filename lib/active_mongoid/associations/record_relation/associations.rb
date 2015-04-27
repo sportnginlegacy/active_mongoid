@@ -9,6 +9,7 @@ require "active_mongoid/associations/record_relation/bindings/many"
 require "active_mongoid/associations/record_relation/referenced/one"
 require "active_mongoid/associations/record_relation/referenced/in"
 require "active_mongoid/associations/record_relation/referenced/many"
+require "active_mongoid/associations/record_relation/referenced/many_to_many"
 
 module ActiveMongoid
   module Associations
