@@ -13,9 +13,6 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
 
 SimpleCov.start 'gem'
 
-require 'i18n'
-I18n.enforce_available_locales = false
-
 require 'mongoid'
 require 'active_record'
 require 'active_mongoid'
