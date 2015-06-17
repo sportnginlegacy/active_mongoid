@@ -39,7 +39,7 @@ module ActiveMongoid
         self.instance_eval do
           define_method(name) do
             attribute = read_attribute(name)
-            attribute.nil? ? nil : ::ActiveMongoid::BSON::ObjectId.from_string(attribute)
+            attribute.nil? ? nil : ::ActiveMongoid::BSON::ObjectId.from_string(attribute.to_s)
           end
         end
       end
