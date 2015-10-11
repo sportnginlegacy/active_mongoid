@@ -23,7 +23,7 @@ module ActiveMongoid
         private
 
         def get_record_relation(name, metadata, object, reload = false)
-          if !reload && (value = instance_variable_get("@#{name}")) != nil
+          if !reload && !(value = instance_variable_get("@#{name}")).nil?
             value
           else
             if object && needs_no_database_query?(object, metadata)
