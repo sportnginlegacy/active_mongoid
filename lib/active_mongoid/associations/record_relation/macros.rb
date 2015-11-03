@@ -6,19 +6,19 @@ module ActiveMongoid
 
         module ClassMethods
 
-          def belongs_to_record(name, options = {})
-            meta = characterize_association(name, Referenced::In, options)
+          def belongs_to_record(name, *opt)
+            meta = characterize_association(name, Referenced::In, *opt)
             reference_record(meta)
             relate_one_to_one_record(name, meta)
           end
 
-          def has_one_record(name, options = {})
-            meta = characterize_association(name, Referenced::One, options)
+          def has_one_record(name, *opt)
+            meta = characterize_association(name, Referenced::One, *opt)
             relate_one_to_one_record(name, meta)
           end
 
-          def has_many_records(name, options = {})
-            meta = characterize_association(name, Referenced::Many, options)
+          def has_many_records(name, *opt)
+            meta = characterize_association(name, Referenced::Many, *opt)
             relate_record(name, meta)
             # document_ids_setter(name, metadata)
             # document_ids_getter(name, metadata)

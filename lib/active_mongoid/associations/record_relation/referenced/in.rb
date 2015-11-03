@@ -60,7 +60,9 @@ module ActiveMongoid
             end
 
             def criteria(metadata, object, type = nil)
-              type.where(metadata.primary_key => object)
+              assoc = type.where(metadata.primary_key => object)
+              assoc = assoc.instance_exec(&metadata.scope) if metadata.scope?
+              assoc
             end
 
           end

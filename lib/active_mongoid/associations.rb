@@ -68,12 +68,16 @@ module ActiveMongoid
 
       private
 
-      def characterize_association(name, relation, options)
-        ActiveMongoid::Associations::Metadata.new({
+      def characterize_association(name, relation, *opts)
+        options = opts.extract_options!
+        initializer = {
           :relation => relation,
           :inverse_class_name => self.name,
           :name => name
-        }.merge(options))
+        }.merge(options)
+        initializer.merge!(scope: opts.shift) if opts.present?
+
+        ActiveMongoid::Associations::Metadata.new(initializer)
       end
 
     end

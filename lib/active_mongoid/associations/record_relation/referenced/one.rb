@@ -60,9 +60,8 @@ module ActiveMongoid
 
             def criteria(metadata, object, type = nil)
               crit = metadata.klass.where(metadata.foreign_key => object)
-              if metadata.polymorphic?
-                crit = crit.where(metadata.type => type.name)
-              end
+              crit = crit.where(metadata.type => type.name) if metadata.polymorphic?
+              crit = crit.instance_exec(&metadata.scope) if metadata.scope?
               crit
             end
 

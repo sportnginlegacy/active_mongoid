@@ -119,6 +119,14 @@ module ActiveMongoid
         @polymorphic ||= (!!self[:as] || !!self[:polymorphic])
       end
 
+      def scope
+        self[:scope]
+      end
+
+      def scope?
+        !!scope
+      end
+
       def lookup_inverses(other)
         return [ inverse_of ] if inverse_of
         if other
