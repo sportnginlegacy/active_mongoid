@@ -41,8 +41,6 @@ module ActiveMongoid
 
         module ClassMethods
 
-          private
-
           def existence_check(name)
             module_eval <<-END
               def #{name}?
@@ -52,6 +50,8 @@ module ActiveMongoid
             END
             self
           end
+
+          private
 
           def record_getter(name, metadata)
             self.instance_eval do
