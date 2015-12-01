@@ -41,7 +41,7 @@ module ActiveMongoid
 
         module ClassMethods
 
-          def existence_check(name)
+          def existence_check(name, relations_metadata=nil)
             module_eval <<-END
               def #{name}?
                 !__send__(:#{name}).blank?
