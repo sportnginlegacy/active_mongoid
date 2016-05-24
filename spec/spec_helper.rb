@@ -27,7 +27,9 @@ require 'rspec'
 
 Mongoid.configure do |config|
   version = ::Gem::Version.new(Mongoid::VERSION)
-  if version >= ::Gem::Version.new("3.0.0")
+  if version >= ::Gem::Version.new("4.0.0")
+    config.connect_to('active_mongoid_test')
+  elsif version >= ::Gem::Version.new("3.0.0")
     config.sessions = {
       default: {
         database: 'active_mongoid_test',
