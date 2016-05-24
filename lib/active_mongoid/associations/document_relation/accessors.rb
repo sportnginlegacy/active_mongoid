@@ -40,8 +40,6 @@ module ActiveMongoid
 
         module ClassMethods
 
-          private
-
           def existence_check(name)
             module_eval <<-END
               def #{name}?
@@ -52,6 +50,7 @@ module ActiveMongoid
             self
           end
 
+          private
           # Getters
 
           def document_getter(name, metadata)

@@ -21,7 +21,7 @@ module ActiveMongoid
 
           def persist_delayed(docs, inserts)
             unless docs.empty?
-              collection.insert(inserts)
+              collection.insert_many(inserts)
               docs.each do |doc|
                 doc.new_record = false
               end

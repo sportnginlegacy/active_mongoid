@@ -24,9 +24,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency "mongoid", "> 2.8.0"
   spec.add_dependency "after_do", "~> 0.3.0"
 
-  spec.add_development_dependency "rspec", "~> 3.1.0"
-  spec.add_development_dependency "sqlite3", "~> 1.3.10"
-  spec.add_development_dependency "database_cleaner", "~> 1.3.0"
+  spec.add_development_dependency "rspec", "> 3.1.0"
+  spec.add_development_dependency "sqlite3", "> 1.3.10"
+  spec.add_development_dependency "database_cleaner", "> 1.3.0"
   spec.add_development_dependency "pry", "~> 0.10.1"
   spec.add_development_dependency "simplecov", "~> 0.8.0"
   spec.add_development_dependency "simplecov-gem-adapter", "~> 1.0.0"
