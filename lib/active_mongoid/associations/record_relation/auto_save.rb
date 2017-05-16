@@ -27,6 +27,7 @@ module ActiveMongoid
             if metadata.stores_foreign_key?
               save_method = :"autosave_record_id_for_#{metadata.name}"
               define_method(save_method) do
+                return if self.changed.include?(metadata.foreign_key)
                 if relation = instance_variable_get("@#{metadata.name}")
                   self.send(metadata.foreign_key_setter, relation.send(metadata.primary_key))
                 end
