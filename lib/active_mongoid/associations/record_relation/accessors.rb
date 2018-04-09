@@ -41,8 +41,6 @@ module ActiveMongoid
 
         module ClassMethods
 
-          private
-
           def existence_check(name)
             module_eval <<-END
               def #{name}?
