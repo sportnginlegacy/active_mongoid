@@ -31,7 +31,7 @@ module ActiveMongoid
             if metadata.stores_foreign_key? && !fields.include?(key)
               field(
                 key,
-                type: Integer,
+                type: Object,
                 default: metadata.foreign_key_default
               )
               if metadata.polymorphic?
