@@ -197,7 +197,7 @@ module ActiveMongoid
       end
 
       def destructive?
-        @destructive ||= (dependent == :delete || dependent == :destroy)
+        @destructive ||= (dependent == :delete || dependent == :destroy || dependent == :delete_all)
       end
 
       def polymorphic?
